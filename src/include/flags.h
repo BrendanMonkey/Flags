@@ -4,7 +4,7 @@
 #define FLAG_TAG '-'
 #define FLAG_EQUAL '='
 
-int calc_argc(int argc);
+inline int calc_argc(int argc);
 
 int parse(int argc, char** argv, char** argt);
 

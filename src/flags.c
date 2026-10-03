@@ -1,6 +1,6 @@
 #include "include/flags.h"
 
-int calc_argc(int argc) {	
+inline int calc_argc(int argc) {	
 	return argc * 2;
 }
 
@@ -65,6 +65,8 @@ int parse(int argc, char** argv, char** argt) {
 		if ( get_chars(argc, argv, &i, arg_v) == -1 ) {
 			break;
 		}
+
+
 	
 	};
 
