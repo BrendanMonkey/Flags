@@ -1,2 +1,2 @@
-bin/main: main.c
-	gcc main.c -g -o bin/main
+bin/main: src/*.c src/include/*.h
+	gcc src/*.c -g -o bin/main
