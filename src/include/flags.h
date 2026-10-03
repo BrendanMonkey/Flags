@@ -2,6 +2,7 @@
 #define MDEV_FLAGS
 
 #define FLAG_TAG '-'
+#define FLAG_EQUAL '='
 
 int calc_argc(int argc);
 
