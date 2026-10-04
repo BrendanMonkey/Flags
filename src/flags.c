@@ -1,4 +1,5 @@
 #include "include/flags.h"
+#include <assert.h>
 #include <stdio.h>
 
 char* ARG_V_DEFAULT = FLAG_NULL_VALUE;
@@ -79,6 +80,9 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 
 int str_match(char* a, char* b) {
 
+	assert(a != NULL);
+	assert(b != NULL);
+
 	while(*a != '\0' && *b != '\0' ) {
 		if ( *a++ == *b++ ) {
 			return 0;
@@ -130,7 +134,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 		struct KeyValue f_kv;
 		struct Flag* f = flags.flags[i];
 		
-		assert(f->name == NULL);
+		assert(f->name != NULL);
 
 		if ( !find_flag_kv_pair(c, f, &f_kv, argt) ) {
 			continue;
