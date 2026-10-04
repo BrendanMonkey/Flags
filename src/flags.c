@@ -85,12 +85,11 @@ int str_match(char* a, char* b) {
 
 	while(*a != '\0' && *b != '\0' ) {
 		if ( *a++ != *b++ ) {
-			return 1;
-		}
-		
+			return 0;
+		}	
 	}
 
-	return 0;
+	return 1;
 }
 
 int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyValue* kv) {
@@ -105,11 +104,11 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 		
 		if (str_match(k.key, f->name)) {
 			*dst = k;
-			return 0;
+			return 1;
 		}
 	}
 
-	return 1;
+	return 0;
 }
 
 int flags_parse(int argc, char** argv, struct Flags flags) {

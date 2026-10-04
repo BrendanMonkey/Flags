@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
 		"-monkey\0",
 		"=\0",
 		"1\0",
-		"-abc\0",
+		"-bc\0",
 	};
 
 	const int size = LENGTH( a, char* );
