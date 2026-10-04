@@ -84,12 +84,13 @@ int str_match(char* a, char* b) {
 	assert(b != NULL);
 
 	while(*a != '\0' && *b != '\0' ) {
-		if ( *a++ == *b++ ) {
-			return 0;
+		if ( *a++ != *b++ ) {
+			return 1;
 		}
+		
 	}
 
-	return 1;
+	return 0;
 }
 
 int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyValue* kv) {
