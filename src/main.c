@@ -2,9 +2,6 @@
 
 int main(int argc, char** argv) {
 
-
-	printf("%d\n", int_from_str("123\0"));
-
 	// Mock args
 	char* a[] = {
 		"-monkey\0",
@@ -18,11 +15,11 @@ int main(int argc, char** argv) {
 	const int size = LENGTH( a, char* );
 
 	struct Flag flag_monkey;
-	flag_monkey.name = "-monkey\0";
+	flag_monkey.name = "monkey\0";
 	flag_monkey.type = String;
 
 	struct Flag flag_abc;
-	flag_abc.name = "-abc\0";
+	flag_abc.name = "abc\0";
 	flag_abc.type = Int;
 
 	struct Flag* flags[] = {

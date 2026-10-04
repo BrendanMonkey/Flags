@@ -96,8 +96,13 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 		if (k.key == NULL) {
 			continue;
 		}
+
 		
-		if (str_match(k.key, f->name)) {
+		char* a = k.key;
+		a++; // Sub out the '-'
+		//k.key++;
+		
+		if (str_match(a, f->name)) {
 			*dst = k;
 			return 1;
 		}
