@@ -1,6 +1,5 @@
 #include "include/flags.h"
-#include <stdio.h>
-#include <string.h>
+
 
 inline int calc_argc(int argc) {	
 	return argc * 2;
@@ -27,6 +26,7 @@ int parse(int argc, char** argv, char** argt) {
 
 	int i = 0; 
 	int argt_i = 0;	
+	
 	while (i < argc) {
 
 		char* arg_k = NULL;

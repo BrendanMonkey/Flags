@@ -4,7 +4,7 @@
 #define FLAG_TAG '-'
 #define FLAG_EQUAL '='
 
-#include <string.h>
+#include "stdio.h"
 
 inline int calc_argc(int argc);
 
