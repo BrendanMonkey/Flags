@@ -4,17 +4,16 @@
 
 IHCT_TEST(test_define_flag_and_get_value) {
 
+	char* expected_str = "'hello testing world!'\0";
 	char* margs[] = {
 		"-print\0",
 		"=\0",
-		"'hello testing world!'\0"
+		expected_str
 	};
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_print;
-	flag_print.name = "print\0";
-	flag_print.type = String;
+	struct Flag flag_print = flag_string("print\0", NULL);
 
 	struct Flag* f[] = {
 		&flag_print
@@ -25,7 +24,34 @@ IHCT_TEST(test_define_flag_and_get_value) {
 
 	IHCT_ASSERT(flag_print.data.string != NULL);
 
+	IHCT_ASSERT_STR(flag_print.data.string, expected_str);
+
 	printf("%s\n", flag_print.data.string);
+}
+
+IHCT_TEST(test_define_and_misspell) {
+
+	
+	char* margs[] = {
+		"-rint\0", // Misspell the command!
+		"=\0",
+		"'hello testing world!'\0"
+	};
+
+	int margs_len = LENGTH(margs, char*);
+
+	struct Flag flag_print = flag_string("print\0", NULL);
+	
+	struct Flag* f[] = {
+		&flag_print
+	};
+
+	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	flags_parse(margs_len, margs, flags);
+
+	// This should be null!!!
+	IHCT_ASSERT(flag_print.data.string == NULL);
+
 }
 
 

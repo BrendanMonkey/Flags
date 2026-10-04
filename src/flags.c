@@ -180,3 +180,12 @@ struct Flags flags_new(struct Flag** flags, int count) {
 	
 	return f;
 };	
+
+struct Flag flag_string(char* name, char* def) {
+	
+	struct Flag f;
+	f.name = name;
+	f.data.string = def;
+	
+	return f;
+}
