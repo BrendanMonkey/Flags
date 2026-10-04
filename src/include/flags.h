@@ -11,7 +11,6 @@
 
 #define LENGTH(a, x) (sizeof(a) / sizeof(x))
 
-
 // (/3) is the ideal size, realisically the size will always be a bit bigger than that. 
 // That is fine though as we avoid heap allocations!
 #define FLAG_VARG_LENGTH(a, x) (LENGTH(a, x) / 3) + 1
@@ -34,10 +33,10 @@ struct Flag {
 
 struct Flags {
 	int count;
-	struct Flag* flags;
+	struct Flag** flags; // I think this creates fragmentation, although it makes using flags nicer, so the tradeoff from memory lookup is worth it.
 };
 
-struct Flags flags_new(struct Flag* flags, int count) ;
+struct Flags flags_new(struct Flag** flags, int count) ;
 
 inline int calc_argc(int argc);
 

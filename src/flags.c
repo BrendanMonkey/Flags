@@ -1,6 +1,12 @@
 #include "include/flags.h"
 #include <stdio.h>
 
+char* ARG_V_DEFAULT = FLAG_NULL_VALUE;
+
+struct KeyValue {
+	char* key;
+	char* val;
+};
 
 inline int calc_argc(int argc) {	
 	return argc * 2;
@@ -23,7 +29,7 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	return i_c;
 }
 
-int parse(int argc, char** argv, char** argt) {
+int parse(int argc, char** argv, struct KeyValue* argt) {
 
 	int i = 0; 
 	int argt_i = 0;	
@@ -35,7 +41,7 @@ int parse(int argc, char** argv, char** argt) {
 		char* arg_eq = NULL;
 	
 		// Assign arg_k with the first chars
-		if ( get_chars(argc, argv, &i, &arg_k) == EOF ) {
+		if ( get_chars(argc, argv, &i, &arg_k) == EOF || arg_k == NULL ) {
 			break;
 		}
 
@@ -45,32 +51,103 @@ int parse(int argc, char** argv, char** argt) {
 		}
 
 		// Assign flag_eq with the next chars
-		if ( get_chars(argc, argv, &i, &arg_eq) == EOF ) {
+		if ( get_chars(argc, argv, &i, &arg_eq) == EOF || arg_eq == NULL ) {
 			break;
 		}
+
+		int k = argt_i++;
+		
+		// Set the key ( we set it before finding the equal operator, as flags can be used as booleans -myBool)
+		argt[k].key = arg_k;
 	
 		// set arg_k to true inside the lookup table.
 		if (arg_eq[0] != FLAG_EQUAL) {
 			continue;
-		}
+		} 
 
-		if ( get_chars(argc, argv, &i, &arg_v) == EOF ) {
+		if ( get_chars(argc, argv, &i, &arg_v) == EOF || arg_v == NULL ) {
 			break;
 		}
-
-		argt[argt_i++] = arg_k;
-		argt[argt_i++] = arg_v;
+	
+		// Set our value
+		argt[k].val = arg_v;
 
 	};
 
 	return argt_i;
 };
 
-struct Flags flags_new(struct Flag* flags, int count) {
+int str_match(char* a, char* b) {
+
+	while(*a != '\0' && *b != '\0' ) {
+		if ( *a++ == *b++ ) {
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
+int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyValue* kv) {
+
+	for (int j = 0; j < c; j++ ) {
+
+		struct KeyValue k = kv[j];
+		if  (k.key == NULL) {
+			continue;
+		}
+		
+		if (str_match(k.key, f->name)) {
+			*dst = k;
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
+int flags_parse(int argc, char** argv, struct Flags flags) {
+
+	// key=-a, val = b
+	// key=-c, val = a
+	struct KeyValue argt[argc];
+
+	// flags
+	// key=-a
+	// key=-b
+	// key=-c
+	// key=-d
+
+	// Take a first parse on all our arguments.
+	// 'c' is the real size of all the arguments.
+	int c = parse(argc, argv, argt);
+
+	struct Flags* f_ptr = &flags;
+
+	for (int i = 0; i < flags.count; i++) {
+
+		struct KeyValue f_kv;
+		struct Flag* f = flags.flags[i];
+		
+		if ( !find_flag_kv_pair(c, f, &f_kv, argt) ) {
+			continue;
+		}
+
+		if (f_kv.val == NULL ) {
+			continue;
+		}
+		
+		f->data.integer = (int)*f_kv.val;
+	}
+
+	return -1; // Change me
+}
+
+struct Flags flags_new(struct Flag** flags, int count) {
 
 	struct Flags f;
 	f.flags = flags;
 	f.count = count;
 	
 	return f;
-};
+};	
