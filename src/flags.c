@@ -46,7 +46,7 @@ int parse(int argc, char** argv, char** argt) {
 
 		// Assign flag_eq with the next chars
 		if ( get_chars(argc, argv, &i, &arg_eq) == EOF ) {
-			continue;
+			break;
 		}
 	
 		// set arg_k to true inside the lookup table.
