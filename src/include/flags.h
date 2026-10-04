@@ -42,7 +42,6 @@ struct Flags {
 
 struct Flags flags_new(struct Flag** flags, int count) ;
 
-inline int calc_argc(int argc);
 
 int flags_parse(int argc, char** argv, struct Flags flags);
 
