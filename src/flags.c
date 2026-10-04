@@ -106,6 +106,17 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 	return 0;
 }
 
+int int_from_str(char* c) {
+
+	int x = 0;
+
+	while(*c != '\0') {
+		x = (x * 10) + (*c++ - '0');
+	}
+
+	return x;
+}
+
 int flags_parse(int argc, char** argv, struct Flags flags) {
 
 	// key=-a, val = b
@@ -147,7 +158,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 				f->data.boolean = str_match(f_kv.val, "true\0"); // Todo: check type!
 				break;
 			case Int:
-	
+				f->data.integer = int_from_str(f_kv.val);
 				break;
 			case String:
 				f->data.string = f_kv.val;

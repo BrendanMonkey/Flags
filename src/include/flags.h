@@ -15,6 +15,8 @@
 // That is fine though as we avoid heap allocations!
 #define FLAG_VARG_LENGTH(a, x) (LENGTH(a, x) / 3) + 1
 
+int int_from_str(char* c);
+
 enum Type {
 	Int,
 	Boolean,

@@ -3,6 +3,8 @@
 int main(int argc, char** argv) {
 
 
+	printf("%d\n", int_from_str("123\0"));
+
 	// Mock args
 	char* a[] = {
 		"-monkey\0",
