@@ -93,6 +93,7 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 	for (int j = 0; j < c; j++ ) {
 
 		struct KeyValue k = kv[j];
+
 		if  (k.key == NULL) {
 			continue;
 		}
@@ -129,6 +130,8 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 		struct KeyValue f_kv;
 		struct Flag* f = flags.flags[i];
 		
+		assert(f->name == NULL);
+
 		if ( !find_flag_kv_pair(c, f, &f_kv, argt) ) {
 			continue;
 		}

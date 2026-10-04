@@ -5,6 +5,7 @@
 #define FLAG_EQUAL '='
 
 #include "stdio.h"
+#include "assert.h"
 
 #define FLAG_NULL_VALUE "\0"
 
