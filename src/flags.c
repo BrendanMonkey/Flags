@@ -65,3 +65,12 @@ int parse(int argc, char** argv, char** argt) {
 
 	return argt_i;
 };
+
+struct Flags flags_new(struct Flag* flags, int count) {
+
+	struct Flags f;
+	f.flags = flags;
+	f.count = count;
+	
+	return f;
+};

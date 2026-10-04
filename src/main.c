@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
 		"world!\0"
 	};
 
-	const int size = (sizeof(a) / sizeof(char*));
+	const int size = LENGTH(a, char*);
 	char* to[size*2];
 
 	parse(size, a, to);
