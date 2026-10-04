@@ -55,8 +55,6 @@ IHCT_TEST(test_define_and_misspell) {
 
 }
 
-
-
 IHCT_TEST(test_define) {
 
 	char* margs[] = {

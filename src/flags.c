@@ -181,6 +181,14 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	return -1; // Change me
 }
 
+
+struct Flag flag_new(char* name, enum Type type) {
+	struct Flag f;
+	f.name = name;
+	f.type = type;
+	return f;
+}
+
 struct Flags flags_new(struct Flag** flags, int count) {
 
 	struct Flags f;
@@ -192,9 +200,7 @@ struct Flags flags_new(struct Flag** flags, int count) {
 
 struct Flag flag_string(char* name, char* def) {
 	
-	struct Flag f;
-	f.name = name;
-	f.type = String;
+	struct Flag f = flag_new(name, String);
 	f.data.string = def;
 	
 	return f;
@@ -202,9 +208,7 @@ struct Flag flag_string(char* name, char* def) {
 
 struct Flag flag_int(char* name, int def) {
 	
-	struct Flag f;
-	f.name = name;
-	f.type = Int;
+	struct Flag f = flag_new(name, Int);
 	f.data.integer = def;
 	
 	return f;
@@ -212,9 +216,7 @@ struct Flag flag_int(char* name, int def) {
 
 struct Flag flag_boolean(char* name, int def) {
 	
-	struct Flag f;
-	f.name = name;
-	f.type = Boolean;
+	struct Flag f = flag_new(name, Int);
 	f.data.boolean = def;
 	
 	return f;
