@@ -10,14 +10,14 @@ int main(int argc, char** argv) {
 		"-abc\0",
 	};
 
-	const int size = FLAG_VARG_LENGTH( a, char* );
+	const int size = LENGTH( a, char* );
 
 	struct Flag flag_monkey;
 	flag_monkey.name = "-monkey\0";
 
 
 	struct Flag flag_abc;
-	flag_monkey.name = "-abc\0";
+	flag_abc.name = "-abc\0";
 
 	struct Flag* flags[] = {
 		&flag_monkey,
