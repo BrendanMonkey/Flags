@@ -91,9 +91,9 @@ IHCT_TEST(test_missing_rune) {
 
 int main(int argc, char **argv) {
 
-
 	char* margs[] = {
 		"-print\0", 
+		"=\0",
 		"money\0",
 		"-a\0",
 	};
