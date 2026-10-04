@@ -67,7 +67,6 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 			break;
 		}
 
-		// set arg_k to true inside the lookup table.
 		if (arg_eq[0] != FLAG_EQUAL) {
 			i--; // Roll back 1 flag.
 			continue;
@@ -181,14 +180,6 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	return -1; // Change me
 }
 
-
-struct Flag flag_new(char* name, enum Type type) {
-	struct Flag f;
-	f.name = name;
-	f.type = type;
-	return f;
-}
-
 struct Flags flags_new(struct Flag** flags, int count) {
 
 	struct Flags f;
@@ -197,6 +188,13 @@ struct Flags flags_new(struct Flag** flags, int count) {
 	
 	return f;
 };	
+
+struct Flag flag_new(char* name, enum Type type) {
+	struct Flag f;
+	f.name = name;
+	f.type = type;
+	return f;
+}
 
 struct Flag flag_string(char* name, char* def) {
 	
@@ -215,7 +213,7 @@ struct Flag flag_int(char* name, int def) {
 }
 
 struct Flag flag_boolean(char* name, int def) {
-	
+
 	struct Flag f = flag_new(name, Int);
 	f.data.boolean = def;
 	
