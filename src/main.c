@@ -11,6 +11,8 @@ int main(int argc, char** argv) {
 		"=\0",
 		"1\0",
 		"-abc\0",
+		"=",
+		"1923453\0"
 	};
 
 	const int size = LENGTH( a, char* );
@@ -21,7 +23,7 @@ int main(int argc, char** argv) {
 
 	struct Flag flag_abc;
 	flag_abc.name = "-abc\0";
-	flag_abc.type = Boolean;
+	flag_abc.type = Int;
 
 	struct Flag* flags[] = {
 		&flag_monkey,
