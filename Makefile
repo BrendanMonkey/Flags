@@ -1,2 +1,2 @@
-bin/main: src/*.c src/include/*.h
-	gcc src/*.c -g -o bin/main
+bin/test: src/*.c src/include/*.h
+	gcc src/*_test.c src/flags.c -I /usr/local/include -L /usr/local/lib/ -g -o bin/test -lihct -Wl,-R /usr/local/lib

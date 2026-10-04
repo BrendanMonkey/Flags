@@ -32,7 +32,6 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	char* t = argv[i_c];
 	
 	*c = t;
-
 	(*i)++;
 
 	return i_c;
@@ -97,10 +96,8 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 			continue;
 		}
 
-		
 		char* a = k.key;
 		a++; // Sub out the '-'
-		//k.key++;
 		
 		if (str_match(a, f->name)) {
 			*dst = k;
