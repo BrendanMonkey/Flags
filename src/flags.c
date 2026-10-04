@@ -23,7 +23,7 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	return i_c;
 }
 
-int parse(int argc, char*** argv, char*** argt) {
+int parse(int argc, char** argv, char** argt) {
 
 	int i = 0; 
 	int argt_i = 0;	
@@ -34,7 +34,7 @@ int parse(int argc, char*** argv, char*** argt) {
 		char* arg_eq = NULL;
 	
 		// Assign arg_k with the first chars
-		if ( get_chars(argc, *argv, &i, &arg_k) == -1 ) {
+		if ( get_chars(argc, argv, &i, &arg_k) == -1 ) {
 			break;
 		}
 
@@ -44,7 +44,7 @@ int parse(int argc, char*** argv, char*** argt) {
 		}
 
 		// Assign flag_eq with the next chars
-		if ( get_chars(argc, *argv, &i, &arg_eq) == -1 ) {
+		if ( get_chars(argc, argv, &i, &arg_eq) == -1 ) {
 			continue;
 		}
 	
@@ -53,12 +53,12 @@ int parse(int argc, char*** argv, char*** argt) {
 			continue;
 		}
 
-		if ( get_chars(argc, *argv, &i, &arg_v) == -1 ) {
+		if ( get_chars(argc, argv, &i, &arg_v) == -1 ) {
 			break;
 		}
 
-		*argt[0] = "a";
-		//*argt[argt_i++] = arg_v;
+		argt[argt_i++] = arg_k;
+		argt[argt_i++] = arg_v;
 
 	};
 

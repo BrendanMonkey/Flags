@@ -1,0 +1,9 @@
+{
+	"makefile.launchConfigurations": [
+		{
+			"cwd": "/home/brendan/dev/c/flags/bin",
+			"binaryPath": "/home/brendan/dev/c/flags/bin/main",
+			"binaryArgs": []
+		}
+	]
+}
