@@ -7,7 +7,7 @@
 #include "stdio.h"
 #include "assert.h"
 
-#define FLAG_NULL_VALUE "\0"
+#define FLAG_NULL_VALUE "aa"
 
 #define LENGTH(a, x) (sizeof(a) / sizeof(x))
 
@@ -23,6 +23,8 @@ enum Type {
 
 union TypeData {
 	int integer;
+	int boolean;
+	char* string;
 };
 
 struct Flag {

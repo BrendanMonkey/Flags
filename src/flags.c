@@ -2,15 +2,23 @@
 #include <assert.h>
 #include <stdio.h>
 
-char* ARG_V_DEFAULT = FLAG_NULL_VALUE;
-
 struct KeyValue {
 	char* key;
 	char* val;
 };
 
-inline int calc_argc(int argc) {	
-	return argc * 2;
+int str_match(char* a, char* b) {
+
+	assert(a != NULL);
+	assert(b != NULL);
+
+	while(*a != '\0' && *b != '\0' ) {
+		if ( *a++ != *b++ ) {
+			return 0;
+		}	
+	}
+
+	return 1;
 }
 
 int get_chars(int argc, char** argv, int* i, char** c) {
@@ -78,19 +86,6 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 	return argt_i;
 };
 
-int str_match(char* a, char* b) {
-
-	assert(a != NULL);
-	assert(b != NULL);
-
-	while(*a != '\0' && *b != '\0' ) {
-		if ( *a++ != *b++ ) {
-			return 0;
-		}	
-	}
-
-	return 1;
-}
 
 int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyValue* kv) {
 
@@ -141,10 +136,24 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 		}
 
 		if (f_kv.val == NULL ) {
+			if (f->type == Boolean) {
+				f->data.boolean = 1;
+			}
 			continue;
 		}
-		
-		f->data.integer = (int)*f_kv.val;
+	
+		switch(f->type) {
+			case Boolean:
+				f->data.boolean = str_match(f_kv.val, "true\0"); // Todo: check type!
+				break;
+			case Int:
+	
+				break;
+			case String:
+				f->data.string = f_kv.val;
+				break;
+		}
+	
 	}
 
 	return -1; // Change me
