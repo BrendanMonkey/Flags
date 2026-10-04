@@ -1,23 +1,12 @@
 #include "include/flags.h"
+#include <stdio.h>
+#include <string.h>
 
 inline int calc_argc(int argc) {	
 	return argc * 2;
 }
 
-int find_char(int argc, char** argv, int s, char c) {
-
-	for (int i = s; i < argc; i++) {
-		char* argr = argv[i];
-		
-		if ( argr[0] == c ) {
-			return i;
-		}
-	}
-
-	return -1;
-}
-
-inline int get_chars(int argc, char** argv, int* i, char* c) {
+int get_chars(int argc, char** argv, int* i, char** c) {
 
 	int i_c = *i;
 
@@ -25,25 +14,27 @@ inline int get_chars(int argc, char** argv, int* i, char* c) {
 		return -1;
 	}
 
-	c = argv[i_c];
+	char* t = argv[i_c];
+	
+	*c = t;
 
-	*i+=1;
+	(*i)++;
 
 	return i_c;
 }
 
-int parse(int argc, char** argv, char** argt) {
+int parse(int argc, char*** argv, char*** argt) {
 
 	int i = 0; 
-	
+	int argt_i = 0;	
 	while (i < argc) {
 
-		char* arg_k;
-		char* arg_v;
-		char* arg_eq;
+		char* arg_k = NULL;
+		char* arg_v = NULL;
+		char* arg_eq = NULL;
 	
 		// Assign arg_k with the first chars
-		if ( get_chars(argc, argv, &i, arg_k) == -1 ) {
+		if ( get_chars(argc, *argv, &i, &arg_k) == -1 ) {
 			break;
 		}
 
@@ -53,21 +44,22 @@ int parse(int argc, char** argv, char** argt) {
 		}
 
 		// Assign flag_eq with the next chars
-		if ( get_chars(argc, argv, &i, arg_eq) == -1 ) {
-			break;
+		if ( get_chars(argc, *argv, &i, &arg_eq) == -1 ) {
+			continue;
 		}
 	
 		// set arg_k to true inside the lookup table.
-		if (arg_eq[0] != FLAG_TAG) {
+		if (arg_eq[0] != FLAG_EQUAL) {
 			continue;
 		}
 
-		if ( get_chars(argc, argv, &i, arg_v) == -1 ) {
+		if ( get_chars(argc, *argv, &i, &arg_v) == -1 ) {
 			break;
 		}
 
+		*argt[0] = "a";
+		//*argt[argt_i++] = arg_v;
 
-	
 	};
 
 	return 0;
