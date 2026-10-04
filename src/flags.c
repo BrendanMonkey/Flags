@@ -1,4 +1,5 @@
 #include "include/flags.h"
+#include <stdio.h>
 
 
 inline int calc_argc(int argc) {	
@@ -10,7 +11,7 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	int i_c = *i;
 
 	if ( i_c >= argc ) {
-		return -1;
+		return EOF;
 	}
 
 	char* t = argv[i_c];
@@ -34,7 +35,7 @@ int parse(int argc, char** argv, char** argt) {
 		char* arg_eq = NULL;
 	
 		// Assign arg_k with the first chars
-		if ( get_chars(argc, argv, &i, &arg_k) == -1 ) {
+		if ( get_chars(argc, argv, &i, &arg_k) == EOF ) {
 			break;
 		}
 
@@ -44,7 +45,7 @@ int parse(int argc, char** argv, char** argt) {
 		}
 
 		// Assign flag_eq with the next chars
-		if ( get_chars(argc, argv, &i, &arg_eq) == -1 ) {
+		if ( get_chars(argc, argv, &i, &arg_eq) == EOF ) {
 			continue;
 		}
 	
@@ -53,7 +54,7 @@ int parse(int argc, char** argv, char** argt) {
 			continue;
 		}
 
-		if ( get_chars(argc, argv, &i, &arg_v) == -1 ) {
+		if ( get_chars(argc, argv, &i, &arg_v) == EOF ) {
 			break;
 		}
 
