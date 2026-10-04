@@ -98,7 +98,7 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 
 		struct KeyValue k = kv[j];
 
-		if  (k.key == NULL) {
+		if (k.key == NULL) {
 			continue;
 		}
 		

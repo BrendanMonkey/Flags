@@ -9,7 +9,6 @@
 
 #define FLAG_NULL_VALUE "\0"
 
-
 #define LENGTH(a, x) (sizeof(a) / sizeof(x))
 
 // (/3) is the ideal size, realisically the size will always be a bit bigger than that. 

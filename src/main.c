@@ -15,7 +15,6 @@ int main(int argc, char** argv) {
 	struct Flag flag_monkey;
 	flag_monkey.name = "-monkey\0";
 
-
 	struct Flag flag_abc;
 	flag_abc.name = "-abc\0";
 
