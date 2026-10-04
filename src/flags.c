@@ -63,5 +63,5 @@ int parse(int argc, char** argv, char** argt) {
 
 	};
 
-	return 0;
+	return argt_i;
 };
