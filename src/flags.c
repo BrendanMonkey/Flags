@@ -185,7 +185,28 @@ struct Flag flag_string(char* name, char* def) {
 	
 	struct Flag f;
 	f.name = name;
+	f.type = String;
 	f.data.string = def;
+	
+	return f;
+}
+
+struct Flag flag_int(char* name, int def) {
+	
+	struct Flag f;
+	f.name = name;
+	f.type = Int;
+	f.data.integer = def;
+	
+	return f;
+}
+
+struct Flag flag_boolean(char* name, int def) {
+	
+	struct Flag f;
+	f.name = name;
+	f.type = Boolean;
+	f.data.boolean = def;
 	
 	return f;
 }

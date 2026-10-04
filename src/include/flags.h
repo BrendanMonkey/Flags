@@ -43,6 +43,8 @@ struct Flags {
 struct Flags flags_new(struct Flag** flags, int count) ;
 
 struct Flag flag_string(char* name, char* def);
+struct Flag flag_boolean(char* name, int def);
+struct Flag flag_int(char* name, int def);
 
 int flags_parse(int argc, char** argv, struct Flags flags);
 
