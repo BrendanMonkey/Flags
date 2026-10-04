@@ -58,18 +58,18 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 			continue;
 		}
 
+		int k = argt_i++;		
+		// Set the key ( we set it before finding the equal operator, as flags can be used as booleans -myBool)
+		argt[k].key = arg_k;
+
 		// Assign flag_eq with the next chars
 		if ( get_chars(argc, argv, &i, &arg_eq) == EOF || arg_eq == NULL ) {
 			break;
 		}
 
-		int k = argt_i++;
-		
-		// Set the key ( we set it before finding the equal operator, as flags can be used as booleans -myBool)
-		argt[k].key = arg_k;
-	
 		// set arg_k to true inside the lookup table.
 		if (arg_eq[0] != FLAG_EQUAL) {
+			i--; // Roll back 1 flag.
 			continue;
 		} 
 
@@ -85,7 +85,7 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 	return argt_i;
 };
 
-
+// A hash map would be nice, as this is a O(N+M) where N is the count of pairs to search, and M is the length of the pairs key.
 int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyValue* kv) {
 
 	for (int j = 0; j < c; j++ ) {
@@ -97,7 +97,7 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 		}
 
 		char* a = k.key;
-		a++; // Sub out the '-'
+		a++; // Sub out the '-', we shouldaaa done this earlier..
 		
 		if (str_match(a, f->name)) {
 			*dst = k;
@@ -157,13 +157,22 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 
 		switch(f->type) {
 			case Boolean:
-				f->data.boolean = str_match(f_kv.val, "true\0"); // Todo: check type!
+				{
+					
+					f->data.boolean = str_match(f_kv.val, "true\0"); // Todo: check type!
+				}
 				break;
 			case Int:
-				f->data.integer = int_from_str(f_kv.val);
+				{
+				
+					f->data.integer = int_from_str(f_kv.val);
+				}
 				break;
 			case String:
-				f->data.string = f_kv.val;
+				{
+					
+					f->data.string = f_kv.val;
+				}
 				break;
 		}
 	
