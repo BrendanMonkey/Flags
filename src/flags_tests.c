@@ -5,8 +5,9 @@
 IHCT_TEST(test_define_flag_and_get_value) {
 
 	char* margs[] = {
-		"a",
-		"b"
+		"-print\0",
+		"=\0",
+		"'hello testing world!'\0"
 	};
 
 	int margs_len = LENGTH(margs, char*);
@@ -19,12 +20,12 @@ IHCT_TEST(test_define_flag_and_get_value) {
 		&flag_print
 	};
 
-	struct Flags flags = flags_new(f, LENGTH(flags, struct Flag*));
+	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
 	IHCT_ASSERT(flag_print.data.string != NULL);
 
-
+	printf("%s\n", flag_print.data.string);
 }
 
 

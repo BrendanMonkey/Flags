@@ -5,6 +5,16 @@
 			"cwd": "/home/brendan/dev/c/flags/bin",
 			"binaryPath": "/home/brendan/dev/c/flags/bin/main",
 			"binaryArgs": []
+		},
+		{
+			"cwd": "/home/brendan/dev/c/flags/bin",
+			"binaryPath": "/home/brendan/dev/c/flags/bin/test",
+			"binaryArgs": []
+		},
+		{
+			"cwd": "/home/brendan/dev/c/flags/bin",
+			"binaryPath": "/home/brendan/dev/c/flags/bin/test.o",
+			"binaryArgs": []
 		}
 	]
 }
