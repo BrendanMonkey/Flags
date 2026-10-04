@@ -6,21 +6,41 @@
 
 #include "stdio.h"
 
+#define FLAG_NULL_VALUE "\0"
+
+
 #define LENGTH(a, x) (sizeof(a) / sizeof(x))
+
+
+// (/3) is the ideal size, realisically the size will always be a bit bigger than that. 
+// That is fine though as we avoid heap allocations!
+#define FLAG_VARG_LENGTH(a, x) (LENGTH(a, x) / 3) + 1
+
+enum Type {
+	Int,
+	Boolean,
+	String,
+};
+
+union TypeData {
+	int integer;
+};
 
 struct Flag {
 	char* name;
+	enum Type type; // I might move this over to a macro, I just really, really hate macro syntax.
+	union TypeData data;
 };
 
 struct Flags {
-	struct Flag* flags;
 	int count;
+	struct Flag* flags;
 };
 
 struct Flags flags_new(struct Flag* flags, int count) ;
 
 inline int calc_argc(int argc);
 
-int parse(int argc, char** argv, char** argt);
+int flags_parse(int argc, char** argv, struct Flags flags);
 
 #endif
