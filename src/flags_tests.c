@@ -2,6 +2,7 @@
 #include "include/flags.h"
 #include <stdio.h>
 
+
 IHCT_TEST(test_define_flag_and_get_value) {
 
 	char* expected_str = "'hello testing world!'\0";
@@ -92,7 +93,6 @@ IHCT_TEST(test_define_random) {
 
 }
 
-
 IHCT_TEST(test_boolean_values) {
 
 	char* margs[] = {
@@ -130,6 +130,40 @@ IHCT_TEST(test_boolean_values) {
 	IHCT_ASSERT(flag_c.data.boolean == 0);
 	IHCT_ASSERT(flag_d.data.boolean == 1);
 	
+}
+
+IHCT_TEST(test_int_values) {
+
+	char* margs[] = {
+		"-a\0",
+		"=\0",
+		"123\0",
+		"-b\0",
+		"=\0",
+		"12a\0",
+		"-c\0",
+		"=\0",
+		"-9\0"
+	};
+
+	int margs_len = LENGTH(margs, char*);
+
+	struct Flag flag_a = flag_int("a\0", 0);
+	struct Flag flag_b = flag_int("b\0", 0);
+	struct Flag flag_c = flag_int("c\0", 0);
+
+	struct Flag* f[] = {
+		&flag_a,
+		&flag_b,
+		&flag_c,
+	};
+
+	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(flag_a.data.integer == 123);
+	IHCT_ASSERT(flag_b.data.integer == 0);
+	IHCT_ASSERT(flag_c.data.integer == -9);
 }
 
 int main(int argc, char **argv) {

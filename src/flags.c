@@ -113,9 +113,13 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 int int_from_str(char* c, int* to) {
 
 	int x = 0;
+	int m = 1;
 
 	// Is this a negative integer?
-	int m = *c++ == '-' ? -1 : 1;
+	if ( *c == '-' ) {
+		m = -1; 
+		c++;
+	}
 	
 	while(*c != '\0') {
 
