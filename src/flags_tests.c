@@ -2,7 +2,6 @@
 #include "include/flags.h"
 #include <stdio.h>
 
-
 IHCT_TEST(test_define_flag_and_get_value) {
 
 	char* expected_str = "'hello testing world!'\0";
@@ -26,8 +25,6 @@ IHCT_TEST(test_define_flag_and_get_value) {
 	IHCT_ASSERT(flag_print.data.string != NULL);
 
 	IHCT_ASSERT_STR(flag_print.data.string, expected_str);
-
-	printf("%s\n", flag_print.data.string);
 }
 
 IHCT_TEST(test_define_and_misspell) {

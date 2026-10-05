@@ -145,6 +145,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	// key=-a, val = b
 	// key=-c, val = a
 	
+	// This is always bigger than it needs to be...
 	struct KeyValue argt[argc];
 
 	// flags
@@ -206,7 +207,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	
 	}
 
-	return -1; // Change me
+	return c; // Change me
 }
 
 struct Flags flags_new(struct Flag** flags, int count) {

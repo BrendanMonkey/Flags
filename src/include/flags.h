@@ -11,9 +11,7 @@
 
 #define LENGTH(a, x) (sizeof(a) / sizeof(x))
 
-// (/3) is the ideal size, realisically the size will always be a bit bigger than that. 
-// That is fine though as we avoid heap allocations!
-#define FLAG_VARG_LENGTH(a, x) (LENGTH(a, x) / 3) + 1
+#define FLAG_LENGTH(a) (sizeof(a) / sizeof(struct Flag*))
 
 enum Type {
 	Int,
