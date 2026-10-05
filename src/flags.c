@@ -49,7 +49,7 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		char* arg_eq = NULL;
 	
 		// Assign arg_k with the first chars
-		if ( get_chars(argc, argv, &i, &arg_k) == EOF || arg_k == NULL ) {
+		if ( get_chars(argc, argv, &i, &arg_k) == EOF ) {
 			break;
 		}
 
@@ -63,7 +63,7 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		argt[k].key = arg_k;
 
 		// Assign flag_eq with the next chars
-		if ( get_chars(argc, argv, &i, &arg_eq) == EOF || arg_eq == NULL ) {
+		if ( get_chars(argc, argv, &i, &arg_eq) == EOF ) {
 			break;
 		}
 
@@ -72,7 +72,7 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 			continue;
 		} 
 
-		if ( get_chars(argc, argv, &i, &arg_v) == EOF || arg_v == NULL ) {
+		if ( get_chars(argc, argv, &i, &arg_v) == EOF  ) {
 			break;
 		}
 	
@@ -214,7 +214,7 @@ struct Flag flag_int(char* name, int def) {
 
 struct Flag flag_boolean(char* name, int def) {
 
-	struct Flag f = flag_new(name, Int);
+	struct Flag f = flag_new(name, Boolean);
 	f.data.boolean = def;
 	
 	return f;

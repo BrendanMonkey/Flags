@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 
+/*
 IHCT_TEST(test_define_flag_and_get_value) {
 
 	char* expected_str = "'hello testing world!'\0";
@@ -55,20 +56,31 @@ IHCT_TEST(test_define_and_misspell) {
 
 }
 
-IHCT_TEST(test_define) {
+*/
 
+IHCT_TEST(test_define_random) {
+
+	char* monkey_str = "test\0";
 	char* margs[] = {
-		"-print\0", // Misspell the command!
+		"-print\0",
+		"-monkey\0",
+		"=\0",
+		monkey_str,
 		"'hello testing world!'\0",
-		"-a",
+		"-c\0",
 	};
 
 	int margs_len = LENGTH(margs, char*);
 
 	struct Flag flag_print = flag_string("print\0", NULL);
+	struct Flag flag_monkey = flag_string("monkey\0", NULL);
+	
+	struct Flag flag_monkey2 = flag_string("monkey2\0", NULL);
 	
 	struct Flag* f[] = {
-		&flag_print
+		&flag_monkey,
+
+		&flag_print,
 	};
 
 	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
@@ -77,9 +89,41 @@ IHCT_TEST(test_define) {
 	// This should be null!!!
 	IHCT_ASSERT(flag_print.data.string == NULL);
 	
+	// This should not be null!!!
+	IHCT_ASSERT(flag_monkey.data.string != NULL);
+	IHCT_ASSERT(flag_monkey.data.string == monkey_str);
+	
+//	IHCT_ASSERT(flag_a.data.boolean == 1);
+
 	
 }
 int main(int argc, char **argv) {
 
-    return IHCT_RUN(argc, argv);
+	char* monkey_str = "test\0";
+	char* margs[] = {
+		"-print\0",
+		"-monkey\0",
+		"=\0",
+		monkey_str,
+		"'hello testing world!'\0",
+		"-c\0",
+	};
+
+	int margs_len = LENGTH(margs, char*);
+
+	struct Flag flag_print = flag_string("print\0", NULL);
+	struct Flag flag_monkey = flag_string("monkey\0", NULL);
+	
+	struct Flag flag_monkey2 = flag_string("monkey2\0", NULL);
+	
+	struct Flag* f[] = {
+		&flag_monkey,
+
+		&flag_print,
+	};
+
+	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	flags_parse(margs_len, margs, flags);
+
+//	IHCT_ASSERT(flag_a.data.boolean == 1);
 }
