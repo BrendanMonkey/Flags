@@ -61,6 +61,7 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		int k = argt_i++;		
 		// Set the key ( we set it before finding the equal operator, as flags can be used as booleans -myBool)
 		argt[k].key = arg_k;
+		argt[k].val = NULL;
 
 		// Assign flag_eq with the next chars
 		if ( get_chars(argc, argv, &i, &arg_eq) == EOF ) {
