@@ -2,8 +2,6 @@
 #include "include/flags.h"
 #include <stdio.h>
 
-
-/*
 IHCT_TEST(test_define_flag_and_get_value) {
 
 	char* expected_str = "'hello testing world!'\0";
@@ -56,8 +54,6 @@ IHCT_TEST(test_define_and_misspell) {
 
 }
 
-*/
-
 IHCT_TEST(test_define_random) {
 
 	char* monkey_str = "test\0";
@@ -79,7 +75,6 @@ IHCT_TEST(test_define_random) {
 	
 	struct Flag* f[] = {
 		&flag_monkey,
-
 		&flag_print,
 	};
 
@@ -95,35 +90,49 @@ IHCT_TEST(test_define_random) {
 	
 //	IHCT_ASSERT(flag_a.data.boolean == 1);
 
-	
 }
-int main(int argc, char **argv) {
 
-	char* monkey_str = "test\0";
+
+IHCT_TEST(test_boolean_values) {
+
 	char* margs[] = {
-		"-print\0",
-		"-monkey\0",
+		"-a\0",
+		"-b\0",
 		"=\0",
-		monkey_str,
-		"'hello testing world!'\0",
+		"1\0",
 		"-c\0",
+		"=\0",
+		"0\0",
+		"-d\0",
+		"=\0",
+		"true\0",
 	};
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_print = flag_string("print\0", NULL);
-	struct Flag flag_monkey = flag_string("monkey\0", NULL);
-	
-	struct Flag flag_monkey2 = flag_string("monkey2\0", NULL);
-	
-	struct Flag* f[] = {
-		&flag_monkey,
+	struct Flag flag_a = flag_boolean("a\0", 0);
+	struct Flag flag_b = flag_boolean("b\0", 0);
+	struct Flag flag_c = flag_boolean("c\0", 0);
+	struct Flag flag_d = flag_boolean("d\0", 0);
 
-		&flag_print,
+	struct Flag* f[] = {
+		&flag_a,
+		&flag_b,
+		&flag_c,
+		&flag_d,
 	};
 
 	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
-//	IHCT_ASSERT(flag_a.data.boolean == 1);
+	IHCT_ASSERT(flag_a.data.boolean == 1);
+	IHCT_ASSERT(flag_b.data.boolean == 1);
+	IHCT_ASSERT(flag_c.data.boolean == 0);
+	IHCT_ASSERT(flag_d.data.boolean == 1);
+	
+}
+
+int main(int argc, char **argv) {
+
+	return IHCT_RUN(argc, argv);
 }

@@ -158,8 +158,14 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 		switch(f->type) {
 			case Boolean:
 				{
+					int bool_val = (f_kv.val[0] == '1' ? 1 : (f_kv.val[0] == '0' ? 0 : -1));
 					
-					f->data.boolean = str_match(f_kv.val, "true\0"); // Todo: check type!
+					if ( bool_val != -1 ) {
+						f->data.boolean = bool_val;
+						break;
+					}
+					
+					f->data.boolean = str_match(f_kv.val, "true\0"); 
 				}
 				break;
 			case Int:
