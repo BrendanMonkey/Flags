@@ -108,15 +108,32 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 	return 0;
 }
 
-int int_from_str(char* c) {
+// I used a pointer as this allows for negative integers,
+// so validating if this function succeeded is hard if we just return the number 
+int int_from_str(char* c, int* to) {
 
 	int x = 0;
 
+	// Is this a negative integer?
+	int m = *c++ == '-' ? -1 : 1;
+	
 	while(*c != '\0') {
-		x = (x * 10) + (*c++ - '0');
+
+		int n = *c++ - '0';
+
+		if ( n < 0 || n > 9 ) {
+			return 0;
+		}
+	
+		x = (x * 10) + n;
 	}
 
-	return x;
+	// Support for negatives.
+	x *= m; 
+
+	*to = x; 
+
+	return 1;
 }
 
 int flags_parse(int argc, char** argv, struct Flags flags) {
@@ -149,8 +166,9 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 		}
 
 		if (f_kv.val == NULL ) {
+			// -myBool
 			if (f->type == Boolean) {
-				f->data.boolean = 1;
+				f->data.boolean = f->type;
 			}
 			continue;
 		}
@@ -170,8 +188,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 				break;
 			case Int:
 				{
-				
-					f->data.integer = int_from_str(f_kv.val);
+					int_from_str(f_kv.val, &f->data.integer);
 				}
 				break;
 			case String:
