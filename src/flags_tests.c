@@ -65,6 +65,9 @@ IHCT_TEST(test_define_random) {
 		monkey_str,
 		"'hello testing world!'\0",
 		"-c\0",
+		"-d\0",
+		"-e\0",
+		"-f\0",
 	};
 
 	int margs_len = LENGTH(margs, char*);

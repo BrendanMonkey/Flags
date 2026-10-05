@@ -145,7 +145,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	// key=-a, val = b
 	// key=-c, val = a
 	
-	struct KeyValue argt[(argc / 3) + 1];
+	struct KeyValue argt[argc];
 
 	// flags
 	// key=-a
