@@ -1,5 +1,4 @@
 #include "include/flags.h"
-#include <assert.h>
 #include <stdio.h>
 
 struct KeyValue {
@@ -37,6 +36,31 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	return i_c;
 }
 
+int break_command(char* arg_k, char** arg_v) {
+
+	int sep_e = 0;
+	int sep_i = 0;
+
+	char* arg_k_cp = arg_k;
+
+	while(*arg_k_cp != '\0') {
+		if ( *arg_k_cp++ == '=' ) {
+			sep_e = sep_i;
+			break;
+		}
+		sep_i++;
+	}
+
+	if ( sep_e <= 0 || sep_e == sep_i ) {		
+		return 0;
+	}
+
+	char* off = arg_k + (sep_e+1); // Offset in memory.
+	*arg_v = off;
+	
+	return 1;
+}
+
 int parse(int argc, char** argv, struct KeyValue* argt) {
 
 	int i = 0; 
@@ -60,21 +84,36 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 
 		int k = argt_i++;		
 		// Set the key ( we set it before finding the equal operator, as flags can be used as booleans -myBool)
-		argt[k].key = arg_k;
+		argt[k].key = NULL;
 		argt[k].val = NULL;
 
 		// Assign flag_eq with the next chars
-		if ( get_chars(argc, argv, &i, &arg_eq) == EOF ) {
-			break;
-		}
+		if ( get_chars(argc, argv, &i, &arg_eq) == EOF || arg_eq[0] != FLAG_EQUAL ) { 
 
-		if (arg_eq[0] != FLAG_EQUAL) {
-			i--; // Roll back 1 flag.
-			continue;
+
+			// Assume that the entire command is one big sequence.
+			int s = break_command(arg_k, &arg_v);
+			argt[k].key = arg_k;
+
+			// It is 'EOF', no more flags to process.
+			if ( !s  ) {
+
+				if (arg_eq != NULL) {
+					i--; // Go back 1;
+					continue;
+				}
+				
+				break;
+			}
+
 		} 
 
-		if ( get_chars(argc, argv, &i, &arg_v) == EOF  ) {
-			break;
+		argt[k].key = arg_k;
+
+		if ( arg_v == NULL ) {
+			if ( get_chars(argc, argv, &i, &arg_v) == EOF ) {
+				break;
+			}
 		}
 	
 		// Set our value

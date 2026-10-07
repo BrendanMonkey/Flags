@@ -36,6 +36,7 @@ struct Flags {
 	struct Flag** flags; // I think this creates fragmentation, although it makes using flags nicer, so the tradeoff from memory lookup is worth it.
 };
 
+int break_command(char* arg_k, char** arg_v);
 struct Flags flags_new(struct Flag** flags, int count) ;
 
 struct Flag flag_string(char* name, char* def);

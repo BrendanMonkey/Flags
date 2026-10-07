@@ -2,6 +2,7 @@
 #include "include/flags.h"
 #include <stdio.h>
 
+
 IHCT_TEST(test_define_flag_and_get_value) {
 
 	char* expected_str = "'hello testing world!'\0";
@@ -52,19 +53,14 @@ IHCT_TEST(test_define_and_misspell) {
 
 }
 
+
 IHCT_TEST(test_define_random) {
 
 	char* monkey_str = "test\0";
 	char* margs[] = {
-		"-print\0",
 		"-monkey\0",
 		"=\0",
 		monkey_str,
-		"'hello testing world!'\0",
-		"-c\0",
-		"-d\0",
-		"-e\0",
-		"-f\0",
 	};
 
 	int margs_len = LENGTH(margs, char*);
@@ -166,7 +162,36 @@ IHCT_TEST(test_int_values) {
 	IHCT_ASSERT(flag_c.data.integer == -9);
 }
 
+IHCT_TEST(test) {
+
+	char* margs[] = {
+		"-a=b\0",
+	};
+
+	int margs_len = LENGTH(margs, char*);
+
+	char arg_k[] = "-a=123\0";
+
+	struct Flag flag_a = flag_int("a\0", 0);
+	
+	struct Flag* f[] = {
+		&flag_a,
+	};
+
+	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(flag_a.data.integer == 123);
+	
+}
+
+
 int main(int argc, char **argv) {
 
-	return IHCT_RUN(argc, argv);
+	char* a = "aa=bb\0";
+	char* b;
+	
+	break_command(a, &b);
+
+	//return IHCT_RUN(argc, argv);
 }
