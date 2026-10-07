@@ -12,9 +12,15 @@ int str_match(char* a, char* b) {
 	assert(b != NULL);
 
 	while(*a != '\0' && *b != '\0' ) {
-		if ( *a++ != *b++ ) {
+		char a1 = *a++;
+		char b1 = *b++;
+
+		if ( a1 != b1 ) {
 			return 0;
 		}	
+		if ( a1 == '=' || b1 =='=' ) {
+			return 1;
+		}
 	}
 
 	return 1;
@@ -110,7 +116,6 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 				i--; // Go back 1.		
 			}
 			
-
 			if ( !break_command(arg_k, &arg_v) ) {	
 				continue;
 			}
