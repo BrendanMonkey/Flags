@@ -57,7 +57,7 @@ int break_command(char* arg_k, char** arg_v) {
 		sep_i++;
 	}
 
-	if ( sep_e <= 0 || sep_e == sep_i ) {		
+	if ( sep_e <= 0 ) {		
 		return 0;
 	}
 
@@ -105,14 +105,12 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		argt[k].val = NULL;
 		
 
-		if (get_chars(argc, argv, &i, &arg_eq) == EOF) {
-			break;
-		}
+		get_chars(argc, argv, &i, &arg_eq);
 
 		// This means arg_k likely holds the key and value.
-		if ( arg_eq[0] != FLAG_EQUAL ) {
+		if ( arg_eq == NULL || arg_eq[0] != FLAG_EQUAL ) {
 
-			if (arg_eq[0] == FLAG_TAG ) {
+			if (arg_eq != NULL && arg_eq[0] == FLAG_TAG  ) {
 				i--; // Go back 1.		
 			}
 			
@@ -122,7 +120,7 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		}
 
 		// arg_eq holds the value.
-		if ( arg_eq[1] != '\0'){
+		if ( arg_eq != NULL && arg_eq[1] != '\0'){
 			break_command(arg_eq, &arg_v);
 		}
 

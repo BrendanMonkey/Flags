@@ -165,12 +165,10 @@ IHCT_TEST(test_int_values) {
 IHCT_TEST(test) {
 
 	char* margs[] = {
-		"-a=b\0",
+		"-a=1\0",
 	};
 
 	int margs_len = LENGTH(margs, char*);
-
-	char arg_k[] = "-a=123\0";
 
 	struct Flag flag_a = flag_int("a\0", 0);
 	
@@ -181,7 +179,7 @@ IHCT_TEST(test) {
 	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
-	IHCT_ASSERT(flag_a.data.integer == 123);
+	IHCT_ASSERT(flag_a.data.integer == 1);
 	
 }
 
