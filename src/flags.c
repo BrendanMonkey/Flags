@@ -61,6 +61,20 @@ int break_command(char* arg_k, char** arg_v) {
 	return 1;
 }
 
+int find_char(char* a, char t) {
+
+	int i = 0; 
+
+	while(*a != '\0') {
+		if ( *a++ == t ) {
+			return i;
+		}
+		i++;
+	}
+
+	return EOF;
+}
+
 int parse(int argc, char** argv, struct KeyValue* argt) {
 
 	int i = 0; 
@@ -71,52 +85,47 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		char* arg_k = NULL;
 		char* arg_v = NULL;
 		char* arg_eq = NULL;
-	
-		// Assign arg_k with the first chars
-		if ( get_chars(argc, argv, &i, &arg_k) == EOF ) {
+
+		if ( get_chars(argc, argv, &i, &arg_k) == EOF) {
 			break;
 		}
 
-		// Do we start with a flag char?
-		if (arg_k[0] != FLAG_TAG) {
+		if ( arg_k[0] != FLAG_TAG ) {
 			continue;
 		}
 
-		int k = argt_i++;		
-		// Set the key ( we set it before finding the equal operator, as flags can be used as booleans -myBool)
-		argt[k].key = NULL;
-		argt[k].val = NULL;
-
-		// Assign flag_eq with the next chars
-		if ( get_chars(argc, argv, &i, &arg_eq) == EOF || arg_eq[0] != FLAG_EQUAL ) { 
-
-
-			// Assume that the entire command is one big sequence.
-			int s = break_command(arg_k, &arg_v);
-			argt[k].key = arg_k;
-
-			// It is 'EOF', no more flags to process.
-			if ( !s  ) {
-
-				if (arg_eq != NULL) {
-					i--; // Go back 1;
-					continue;
-				}
-				
-				break;
-			}
-
-		} 
-
+		int k = argt_i++;
 		argt[k].key = arg_k;
+		argt[k].val = NULL;
+		
 
-		if ( arg_v == NULL ) {
-			if ( get_chars(argc, argv, &i, &arg_v) == EOF ) {
-				break;
+		if (get_chars(argc, argv, &i, &arg_eq) == EOF) {
+			break;
+		}
+
+		// This means arg_k likely holds the key and value.
+		if ( arg_eq[0] != FLAG_EQUAL ) {
+
+			if (arg_eq[0] == FLAG_TAG ) {
+				i--; // Go back 1.		
+			}
+			
+
+			if ( !break_command(arg_k, &arg_v) ) {	
+				continue;
 			}
 		}
-	
-		// Set our value
+
+		// arg_eq holds the value.
+		if ( arg_eq[1] != '\0'){
+			break_command(arg_eq, &arg_v);
+		}
+
+		// unpack our value.
+		if ( arg_v == NULL ) {
+			get_chars(argc, argv, &i, &arg_v);
+		}
+
 		argt[k].val = arg_v;
 
 	};

@@ -188,10 +188,5 @@ IHCT_TEST(test) {
 
 int main(int argc, char **argv) {
 
-	char* a = "aa=bb\0";
-	char* b;
-	
-	break_command(a, &b);
-
-	//return IHCT_RUN(argc, argv);
+	return IHCT_RUN(argc, argv);
 }

@@ -7,8 +7,6 @@
 #include "stdio.h"
 #include "assert.h"
 
-#define FLAG_NULL_VALUE "aa"
-
 #define LENGTH(a, x) (sizeof(a) / sizeof(x))
 
 #define FLAG_LENGTH(a) (sizeof(a) / sizeof(struct Flag*))
