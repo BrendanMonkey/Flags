@@ -5,7 +5,7 @@
 
 IHCT_TEST(test_define_flag_and_get_value) {
 
-	char* expected_str = "'hello testing world!'\0";
+	char* expected_str = "'hellotesting world!'\0";
 	char* margs[] = {
 		"-print\0",
 		"=\0",
@@ -166,6 +166,74 @@ IHCT_TEST(test) {
 
 	char* margs[] = {
 		"-a=1\0",
+	};
+
+	int margs_len = LENGTH(margs, char*);
+
+	struct Flag flag_a = flag_int("a\0", 0);
+	
+	struct Flag* f[] = {
+		&flag_a,
+	};
+
+	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(flag_a.data.integer == 1);
+	
+}
+
+
+IHCT_TEST(test_werid_parsing) {
+
+	char* margs[] = {
+		"-a\0",
+		"=1\0",
+	};
+
+	int margs_len = LENGTH(margs, char*);
+
+	struct Flag flag_a = flag_int("a\0", 0);
+	
+	struct Flag* f[] = {
+		&flag_a,
+	};
+
+	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(flag_a.data.integer == 1);
+	
+}
+IHCT_TEST(test_werid_parsing2) {
+
+	char* margs[] = {
+		"-a=\0",
+		"1\0",
+	};
+
+	int margs_len = LENGTH(margs, char*);
+
+	struct Flag flag_a = flag_int("a\0", 0);
+	
+	struct Flag* f[] = {
+		&flag_a,
+	};
+
+	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(flag_a.data.integer == 1);
+	
+}
+
+IHCT_TEST(test_werid_parsing3) {
+
+	char* margs[] = {
+		
+		"-a\0",
+		"=1\0",
+
 	};
 
 	int margs_len = LENGTH(margs, char*);

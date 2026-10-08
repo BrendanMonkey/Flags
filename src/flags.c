@@ -18,6 +18,7 @@ int str_match(char* a, char* b) {
 		if ( a1 != b1 ) {
 			return 0;
 		}	
+		// Temp hack, needs to be removed.
 		if ( a1 == '=' || b1 =='=' ) {
 			return 1;
 		}
@@ -57,9 +58,14 @@ int break_command(char* arg_k, char** arg_v) {
 		sep_i++;
 	}
 
-	if ( sep_e <= 0 ) {		
+	if ( sep_e <= 0 && (arg_k[sep_e] != '=') ) {		
 		return 0;
 	}
+
+	if ( arg_k[sep_e+1] == '\0' ) {
+		return 0;
+	} 
+	
 
 	char* off = arg_k + (sep_e+1); // Offset in memory.
 	*arg_v = off;
@@ -80,6 +86,8 @@ int find_char(char* a, char t) {
 
 	return EOF;
 }
+
+// -a = b,
 
 int parse(int argc, char** argv, struct KeyValue* argt) {
 
@@ -114,14 +122,30 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 				i--; // Go back 1.		
 			}
 			
-			if ( !break_command(arg_k, &arg_v) ) {	
+			
+			if ( find_char(arg_k, '=') != EOF ) {
+
+				if (break_command(arg_k, &arg_v)) {
+					arg_eq = NULL;		
+				}
+			
+			} else {
 				continue;
 			}
+
+	
+
+			
 		}
 
 		// arg_eq holds the value.
-		if ( arg_eq != NULL && arg_eq[1] != '\0'){
-			break_command(arg_eq, &arg_v);
+		if ( arg_eq != NULL){
+			if ( arg_eq[0] == '=' ) {
+				break_command(arg_eq,&arg_v);
+			} else {
+				arg_v = arg_eq;
+			}
+			
 		}
 
 		// unpack our value.
