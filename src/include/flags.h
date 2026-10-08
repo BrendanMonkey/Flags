@@ -11,6 +11,7 @@
 
 #define FLAG_LENGTH(a) (sizeof(a) / sizeof(struct Flag*))
 
+#define FLAG_STR(a) a "\0"
 enum Type {
 	Int,
 	Boolean,

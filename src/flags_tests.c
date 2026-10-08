@@ -14,7 +14,7 @@ IHCT_TEST(test_define_flag_and_get_value) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_print = flag_string("print\0", NULL);
+	struct Flag flag_print = flag_string(FLAG_STR("print"), NULL);
 
 	struct Flag* f[] = {
 		&flag_print
@@ -39,7 +39,7 @@ IHCT_TEST(test_define_and_misspell) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_print = flag_string("print\0", NULL);
+	struct Flag flag_print = flag_string(FLAG_STR("print"), NULL);
 	
 	struct Flag* f[] = {
 		&flag_print
@@ -65,10 +65,10 @@ IHCT_TEST(test_define_random) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_print = flag_string("print\0", NULL);
-	struct Flag flag_monkey = flag_string("monkey\0", NULL);
+	struct Flag flag_print = flag_string(FLAG_STR("print"), NULL);
+	struct Flag flag_monkey = flag_string(FLAG_STR("monkey"), NULL);
 	
-	struct Flag flag_monkey2 = flag_string("monkey2\0", NULL);
+	struct Flag flag_monkey2 = flag_string(FLAG_STR("monkey2"), NULL);
 	
 	struct Flag* f[] = {
 		&flag_monkey,
@@ -105,10 +105,10 @@ IHCT_TEST(test_boolean_values) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_a = flag_boolean("a\0", 1);
-	struct Flag flag_b = flag_boolean("b\0", 0);
-	struct Flag flag_c = flag_boolean("c\0", 0);
-	struct Flag flag_d = flag_boolean("d\0", 1);
+	struct Flag flag_a = flag_boolean(FLAG_STR("a"), 1);
+	struct Flag flag_b = flag_boolean(FLAG_STR("b"), 0);
+	struct Flag flag_c = flag_boolean(FLAG_STR("c"), 0);
+	struct Flag flag_d = flag_boolean(FLAG_STR("d"), 1);
 
 	struct Flag* f[] = {
 		&flag_a,
@@ -143,9 +143,9 @@ IHCT_TEST(test_int_values) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_a = flag_int("a\0", 0);
-	struct Flag flag_b = flag_int("b\0", 0);
-	struct Flag flag_c = flag_int("c\0", 0);
+	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
+	struct Flag flag_b = flag_int(FLAG_STR("b"), 0);
+	struct Flag flag_c = flag_int(FLAG_STR("c"), 0);
 
 	struct Flag* f[] = {
 		&flag_a,
@@ -169,7 +169,7 @@ IHCT_TEST(test) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_a = flag_int("a\0", 0);
+	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
 	
 	struct Flag* f[] = {
 		&flag_a,
@@ -192,7 +192,7 @@ IHCT_TEST(test_werid_parsing) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_a = flag_int("a\0", 0);
+	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
 	
 	struct Flag* f[] = {
 		&flag_a,
@@ -213,7 +213,7 @@ IHCT_TEST(test_werid_parsing2) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_a = flag_int("a\0", 0);
+	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
 	
 	struct Flag* f[] = {
 		&flag_a,
@@ -237,7 +237,7 @@ IHCT_TEST(test_werid_parsing3) {
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_a = flag_int("a\0", 0);
+	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
 	
 	struct Flag* f[] = {
 		&flag_a,
