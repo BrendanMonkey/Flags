@@ -2,7 +2,6 @@
 #include "include/flags.h"
 #include <stdio.h>
 
-
 IHCT_TEST(test_define_flag_and_get_value) {
 
 	char* expected_str = "'hellotesting world!'\0";
@@ -249,7 +248,6 @@ IHCT_TEST(test_werid_parsing3) {
 	IHCT_ASSERT(flag_a.data.integer == 1);
 	
 }
-
 
 int main(int argc, char **argv) {
 

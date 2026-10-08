@@ -6,6 +6,20 @@ struct KeyValue {
 	char* val;
 };
 
+int find_char(char* a, char t) {
+
+	int i = 0; 
+
+	while(*a != '\0') {
+		if ( *a++ == t ) {
+			return i;
+		}
+		i++;
+	}
+
+	return EOF;
+}
+
 int str_match(char* a, char* b) {
 
 	assert(a != NULL);
@@ -43,6 +57,38 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	return i_c;
 }
 
+// I used a pointer as this allows for negative integers,
+// so validating if this function succeeded is hard if we just return EOF or something.
+int int_from_str(char* c, int* to) {
+
+	int x = 0;
+	int m = 1;
+
+	// Is this a negative integer?
+	if ( *c == '-' ) {
+		m = -1; 
+		c++;
+	}
+	
+	while(*c != '\0') {
+
+		int n = *c++ - '0';
+
+		if ( n < 0 || n > 9 ) {
+			return 0;
+		}
+	
+		x = (x * 10) + n;
+	}
+
+	// Support for negatives.
+	x *= m; 
+
+	*to = x; 
+
+	return 1;
+}
+
 int break_command(char* arg_k, char** arg_v, int s_off) {
 
 	int sep_e = 0;
@@ -71,22 +117,6 @@ int break_command(char* arg_k, char** arg_v, int s_off) {
 	
 	return 1;
 }
-
-int find_char(char* a, char t) {
-
-	int i = 0; 
-
-	while(*a != '\0') {
-		if ( *a++ == t ) {
-			return i;
-		}
-		i++;
-	}
-
-	return EOF;
-}
-
-// -a = b,
 
 int parse(int argc, char** argv, struct KeyValue* argt) {
 
@@ -175,51 +205,10 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 	return 0;
 }
 
-// I used a pointer as this allows for negative integers,
-// so validating if this function succeeded is hard if we just return the number 
-int int_from_str(char* c, int* to) {
-
-	int x = 0;
-	int m = 1;
-
-	// Is this a negative integer?
-	if ( *c == '-' ) {
-		m = -1; 
-		c++;
-	}
-	
-	while(*c != '\0') {
-
-		int n = *c++ - '0';
-
-		if ( n < 0 || n > 9 ) {
-			return 0;
-		}
-	
-		x = (x * 10) + n;
-	}
-
-	// Support for negatives.
-	x *= m; 
-
-	*to = x; 
-
-	return 1;
-}
-
 int flags_parse(int argc, char** argv, struct Flags flags) {
 
-	// key=-a, val = b
-	// key=-c, val = a
-	
 	// This is always bigger than it needs to be...
 	struct KeyValue argt[argc];
-
-	// flags
-	// key=-a
-	// key=-b
-	// key=-c
-	// key=-d
 
 	// Take a first parse on all our arguments.
 	// 'c' is the real size of all the arguments.
@@ -271,7 +260,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	
 	}
 
-	return c; // Change me
+	return c;
 }
 
 struct Flags flags_new(struct Flag** flags, int count) {

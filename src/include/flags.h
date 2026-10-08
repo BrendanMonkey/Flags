@@ -7,11 +7,10 @@
 #include "stdio.h"
 #include "assert.h"
 
+#define FLAG_STR(a) a "\0"
 #define LENGTH(a, x) (sizeof(a) / sizeof(x))
-
 #define FLAG_LENGTH(a) (sizeof(a) / sizeof(struct Flag*))
 
-#define FLAG_STR(a) a "\0"
 enum Type {
 	Int,
 	Boolean,
@@ -35,12 +34,13 @@ struct Flags {
 	struct Flag** flags; // I think this creates fragmentation, although it makes using flags nicer, so the tradeoff from memory lookup is worth it.
 };
 
-struct Flags flags_new(struct Flag** flags, int count) ;
-
-struct Flag flag_string(char* name, char* def);
-struct Flag flag_boolean(char* name, int def);
-struct Flag flag_int(char* name, int def);
 
 int flags_parse(int argc, char** argv, struct Flags flags);
+
+struct Flags flags_new(struct Flag** flags, int count) ;
+
+struct Flag flag_int(char* name, int def);
+struct Flag flag_boolean(char* name, int def);
+struct Flag flag_string(char* name, char* def);
 
 #endif
