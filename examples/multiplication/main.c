@@ -3,8 +3,8 @@
 
 int main(int argc, char** argv) {
 
-	struct Flag flag_x_mul = flag_int("x\0", 5);
-	struct Flag flag_y_mul = flag_int("y\0", 10);
+	struct Flag flag_x_mul = flag_int(FLAG_STR("x"), 5);
+	struct Flag flag_y_mul = flag_int(FLAG_STR("y"), 10);
 
 	struct Flag* f[] = {
 		&flag_x_mul,
