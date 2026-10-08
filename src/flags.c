@@ -99,6 +99,7 @@ int break_arg_k(char* arg_k, char** arg_v, int s_off) {
 
 	char* arg_k_cp = arg_k;
 
+	// Todo: change this to 'find_char'
 	while(arg_k_cp[sep_i] != '\0') {
 		if ( arg_k_cp[sep_i] == '=' ) {
 			sep_e = sep_i;
