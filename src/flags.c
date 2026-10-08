@@ -61,7 +61,7 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 
 // I used a pointer as this allows for negative integers,
 // so validating if this function succeeded is hard if we just return EOF or something.
-int int_from_str(char* c, int* to) {
+int str_to_int(char* c, int* to) {
 
 	int x = 0;
 	int m = 1;
@@ -210,25 +210,25 @@ int search_kvs_for_flag( int c, struct Flag* f, struct KeyValue* dst, struct Key
 	return 0;
 }
 
-void map_kv_data_to_flag(struct Flag* f, struct KeyValue f_kv) {
+void map_kv_data_to_flag(struct Flag* f, struct KeyValue kv) {
 	switch(f->type) {
 		case Boolean:
 			{
-				int bool_val = (f_kv.val[0] == '1' ? 1 : (f_kv.val[0] == '0' ? 0 : -1));
+				int bool_val = (kv.val[0] == '1' ? 1 : (kv.val[0] == '0' ? 0 : -1));
 				
 				if ( bool_val != -1 ) {
 					f->data.boolean = bool_val;
 					break;
 				}
 				
-				f->data.boolean = str_match(f_kv.val, "true\0") || str_match(f_kv.val, "false\0"); 
+				f->data.boolean = str_match(kv.val, "true\0") || str_match(kv.val, "false\0"); 
 			}
 			break;
 		case Int:
-			int_from_str(f_kv.val, &f->data.integer);
+			str_to_int(kv.val, &f->data.integer);
 			break;
 		case String:	
-			f->data.string = f_kv.val;
+			f->data.string = kv.val;
 			break;
 	}
 }
@@ -246,20 +246,20 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 
 	for (int i = 0; i < flags.count; i++) {
 
-		struct KeyValue f_kv;
+		struct KeyValue kv;
 		struct Flag* f = flags.flags[i];
 	
 		assert(f->name != NULL); // You messed up if a flag name is null lmao.
 
-		if ( !search_kvs_for_flag(kvs_c, f, &f_kv, kvs) ) {
+		if ( !search_kvs_for_flag(kvs_c, f, &kv, kvs) ) {
 			continue;
 		}
 
-		if (f_kv.val == NULL ) {
+		if (kv.val == NULL ) {
 			continue;
 		}
 
-		map_kv_data_to_flag(f, f_kv);
+		map_kv_data_to_flag(f, kv);
 	}
 
 	return kvs_c;
