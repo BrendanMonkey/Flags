@@ -239,10 +239,6 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 		}
 
 		if (f_kv.val == NULL ) {
-			// -myBool
-			if (f->type == Boolean) {
-				f->data.boolean = f->type;
-			}
 			continue;
 		}
 
@@ -256,7 +252,8 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 						break;
 					}
 					
-					f->data.boolean = str_match(f_kv.val, "true\0"); 
+				
+					f->data.boolean = str_match(f_kv.val, "true\0") || str_match(f_kv.val, "false\0"); 
 				}
 				break;
 			case Int:

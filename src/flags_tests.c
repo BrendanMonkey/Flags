@@ -98,18 +98,17 @@ IHCT_TEST(test_boolean_values) {
 		"1\0",
 		"-c\0",
 		"=\0",
-		"0\0",
 		"-d\0",
 		"=\0",
-		"true\0",
+		"0\0",
 	};
 
 	int margs_len = LENGTH(margs, char*);
 
-	struct Flag flag_a = flag_boolean("a\0", 0);
+	struct Flag flag_a = flag_boolean("a\0", 1);
 	struct Flag flag_b = flag_boolean("b\0", 0);
 	struct Flag flag_c = flag_boolean("c\0", 0);
-	struct Flag flag_d = flag_boolean("d\0", 0);
+	struct Flag flag_d = flag_boolean("d\0", 1);
 
 	struct Flag* f[] = {
 		&flag_a,
