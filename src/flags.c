@@ -32,7 +32,9 @@ int str_match(char* a, char* b) {
 		if ( a1 != b1 ) {
 			return 0;
 		}	
-		// Temp hack, needs to be removed.
+
+		// This needs to go ASAP, it is caused by me not wanting to heap allocate anything.
+		// So, if -key=value, this isn't broken into [-key, =, value], and if we want to seperate the key, we need to heap allocate the key.
 		if ( a1 == '=' || b1 =='=' ) {
 			return 1;
 		}
@@ -83,13 +85,14 @@ int int_from_str(char* c, int* to) {
 
 	// Support for negatives.
 	x *= m; 
-
 	*to = x; 
 
 	return 1;
 }
 
-int break_command(char* arg_k, char** arg_v, int s_off) {
+// I think break_arg_k is doing too much work.
+// it handles cases like -a=b, and [-a, =b] where a is a seperate string from b.
+int break_arg_k(char* arg_k, char** arg_v, int s_off) {
 
 	int sep_e = 0;
 	int sep_i = s_off;
@@ -118,10 +121,11 @@ int break_command(char* arg_k, char** arg_v, int s_off) {
 	return 1;
 }
 
-int parse(int argc, char** argv, struct KeyValue* argt) {
+// I kinda hate this parser, like, even after re-writing it, i hate it.
+int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 
 	int i = 0; 
-	int argt_i = 0;	
+	int kvs_i = 0;	
 	
 	while (i < argc) {
 
@@ -129,17 +133,18 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		char* arg_v = NULL;
 		char* arg_eq = NULL;
 
-		if ( get_chars(argc, argv, &i, &arg_k) == EOF) {
+		if (get_chars(argc, argv, &i, &arg_k) == EOF) {
 			break;
 		}
 
+		// If there is no flag_tag, continue.
 		if ( arg_k[0] != FLAG_TAG ) {
 			continue;
 		}
 
-		int k = argt_i++;
-		argt[k].key = arg_k;
-		argt[k].val = NULL;
+		int k = kvs_i++;
+		kvs[k].key = arg_k; 
+		kvs[k].val = NULL;
 		
 		get_chars(argc, argv, &i, &arg_eq);
 
@@ -156,7 +161,7 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 				continue;
 			}
 			
-			if (break_command(arg_k, &arg_v, eq_i)) {
+			if (break_arg_k(arg_k, &arg_v, eq_i)) {
 				arg_eq = NULL;		
 			}
 		}
@@ -164,7 +169,7 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		// arg_eq holds the value.
 		if ( arg_eq != NULL){
 			if ( arg_eq[0] == '=' ) {
-				break_command(arg_eq,&arg_v, 0);
+				break_arg_k(arg_eq,&arg_v, 0);
 			} else {
 				arg_v = arg_eq;
 			}
@@ -175,19 +180,19 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 			get_chars(argc, argv, &i, &arg_v);
 		}
 
-		argt[k].val = arg_v;
+		kvs[k].val = arg_v;
 
 	};
 
-	return argt_i;
+	return kvs_i;
 };
 
-// A hash map would be nice, as this is a O(N+M) where N is the count of pairs to search, and M is the length of the pairs key.
-int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyValue* kv) {
+// A hash map would be nice, as this is a O(N*M) where N is the count of pairs to search, and M is the length of the pairs key.
+int search_kvs_for_flag( int c, struct Flag* f, struct KeyValue* dst, struct KeyValue* kvs) {
 
-	for (int j = 0; j < c; j++ ) {
+	for (int i = 0; i < c; i ++ ) {
 
-		struct KeyValue k = kv[j];
+		struct KeyValue k = kvs[i];
 
 		if (k.key == NULL) {
 			continue;
@@ -205,25 +210,48 @@ int find_flag_kv_pair( int c, struct Flag* f, struct KeyValue* dst, struct KeyVa
 	return 0;
 }
 
+void map_kv_data_to_flag(struct Flag* f, struct KeyValue f_kv) {
+	switch(f->type) {
+		case Boolean:
+			{
+				int bool_val = (f_kv.val[0] == '1' ? 1 : (f_kv.val[0] == '0' ? 0 : -1));
+				
+				if ( bool_val != -1 ) {
+					f->data.boolean = bool_val;
+					break;
+				}
+				
+				f->data.boolean = str_match(f_kv.val, "true\0") || str_match(f_kv.val, "false\0"); 
+			}
+			break;
+		case Int:
+			int_from_str(f_kv.val, &f->data.integer);
+			break;
+		case String:	
+			f->data.string = f_kv.val;
+			break;
+	}
+}
+
 int flags_parse(int argc, char** argv, struct Flags flags) {
 
 	// This is always bigger than it needs to be...
-	struct KeyValue argt[argc];
+	// I didn't think of that while designing the parser.
+	// It shouldn't be a problem??? Maybe it would cause a stack overflow, if you had a load of args.
+	struct KeyValue kvs[argc];
 
 	// Take a first parse on all our arguments.
 	// 'c' is the real size of all the arguments.
-	int c = parse(argc, argv, argt);
-
-	struct Flags* f_ptr = &flags;
+	int kvs_c = parse_chars(argc, argv, kvs);
 
 	for (int i = 0; i < flags.count; i++) {
 
 		struct KeyValue f_kv;
 		struct Flag* f = flags.flags[i];
-		
-		assert(f->name != NULL);
+	
+		assert(f->name != NULL); // You messed up if a flag name is null lmao.
 
-		if ( !find_flag_kv_pair(c, f, &f_kv, argt) ) {
+		if ( !search_kvs_for_flag(kvs_c, f, &f_kv, kvs) ) {
 			continue;
 		}
 
@@ -231,36 +259,10 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 			continue;
 		}
 
-		switch(f->type) {
-			case Boolean:
-				{
-					int bool_val = (f_kv.val[0] == '1' ? 1 : (f_kv.val[0] == '0' ? 0 : -1));
-					
-					if ( bool_val != -1 ) {
-						f->data.boolean = bool_val;
-						break;
-					}
-					
-				
-					f->data.boolean = str_match(f_kv.val, "true\0") || str_match(f_kv.val, "false\0"); 
-				}
-				break;
-			case Int:
-				{
-					int_from_str(f_kv.val, &f->data.integer);
-				}
-				break;
-			case String:
-				{
-					
-					f->data.string = f_kv.val;
-				}
-				break;
-		}
-	
+		map_kv_data_to_flag(f, f_kv);
 	}
 
-	return c;
+	return kvs_c;
 }
 
 struct Flags flags_new(struct Flag** flags, int count) {
