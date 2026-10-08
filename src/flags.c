@@ -43,15 +43,15 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	return i_c;
 }
 
-int break_command(char* arg_k, char** arg_v) {
+int break_command(char* arg_k, char** arg_v, int s_off) {
 
 	int sep_e = 0;
-	int sep_i = 0;
+	int sep_i = s_off;
 
 	char* arg_k_cp = arg_k;
 
-	while(*arg_k_cp != '\0') {
-		if ( *arg_k_cp++ == '=' ) {
+	while(arg_k_cp[sep_i] != '\0') {
+		if ( arg_k_cp[sep_i] == '=' ) {
 			sep_e = sep_i;
 			break;
 		}
@@ -66,7 +66,6 @@ int break_command(char* arg_k, char** arg_v) {
 		return 0;
 	} 
 	
-
 	char* off = arg_k + (sep_e+1); // Offset in memory.
 	*arg_v = off;
 	
@@ -112,7 +111,6 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 		argt[k].key = arg_k;
 		argt[k].val = NULL;
 		
-
 		get_chars(argc, argv, &i, &arg_eq);
 
 		// This means arg_k likely holds the key and value.
@@ -121,31 +119,25 @@ int parse(int argc, char** argv, struct KeyValue* argt) {
 			if (arg_eq != NULL && arg_eq[0] == FLAG_TAG  ) {
 				i--; // Go back 1.		
 			}
-			
-			
-			if ( find_char(arg_k, '=') != EOF ) {
+						
+			int eq_i = find_char(arg_k, '=');
 
-				if (break_command(arg_k, &arg_v)) {
-					arg_eq = NULL;		
-				}
-			
-			} else {
+			if ( eq_i == EOF ) {
 				continue;
 			}
-
-	
-
 			
+			if (break_command(arg_k, &arg_v, eq_i)) {
+				arg_eq = NULL;		
+			}
 		}
 
 		// arg_eq holds the value.
 		if ( arg_eq != NULL){
 			if ( arg_eq[0] == '=' ) {
-				break_command(arg_eq,&arg_v);
+				break_command(arg_eq,&arg_v, 0);
 			} else {
 				arg_v = arg_eq;
 			}
-			
 		}
 
 		// unpack our value.
