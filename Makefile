@@ -1,13 +1,25 @@
-all: tests run_tests run_examples
+BUILD_DIR := ./bin
+SRC := ./src
+
+TEST_SRC := $(SRC)/*_tests.c
+CODE_SRC := $(SRC)/flags.c
+
+BASE_LIB_DIR := /usr/local/include
+LIB_FLAGS := -lihct -Wl,-R $(BASE_LIB_DIR)
+
+TEST_OBJ := $(BUILD_DIR)/test.o
+CFLAGS_TEST := -o ${TEST_OBJ} $(LIB_FLAGS)
+
+all: build_tests run_tests run_examples
 	
-tests: 
-	gcc -g src/*_tests.c src/flags.c -I /usr/local/include -L /usr/local/lib/ -o bin/test.o -lihct -Wl,-R /usr/local/lib
+build_tests: 
+	$(CC) $(CODE_SRC) $(TEST_SRC) $(CFLAGS_TEST)
+
+run_tests: build_tests
+	./bin/test.o -t 99999
 
 example:
-	gcc -g src/flags.c examples/multiplication/main.c -o bin/examples.o
+	$(CC) -g $(CODE_SRC) examples/multiplication/main.c -o bin/examples.o
 
 run_examples: example
 	./bin/examples.o
-
-run_tests: 
-	./bin/test.o -t 99999
