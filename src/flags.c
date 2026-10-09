@@ -2,9 +2,17 @@
 #include <stdio.h>
 
 struct KeyValue {
+	int key_eq; // Does the key have an equal operator, and where is the location?
 	char* key;
 	char* val;
 };
+
+int max(int a, int b) {
+	if (a > b ) {
+		return a;
+	}
+	return b;
+}
 
 int find_char(char* a, char t) {
 
@@ -20,24 +28,20 @@ int find_char(char* a, char t) {
 	return EOF;
 }
 
-int str_match(char* a, char* b) {
+int str_match(char* a, char* b, int s) {
 
 	assert(a != NULL);
 	assert(b != NULL);
 
-	while(*a != '\0' && *b != '\0' ) {
+	int i = 0;
+	while(*a != '\0' && *b != '\0' && (s == 0 || i++ < s)) {
+
 		char a1 = *a++;
 		char b1 = *b++;
 
 		if ( a1 != b1 ) {
 			return 0;
 		}	
-
-		// This needs to go ASAP, it is caused by me not wanting to heap allocate anything.
-		// So, if -key=value, this isn't broken into [-key, =, value], and if we want to seperate the key, we need to heap allocate the key.
-		if ( a1 == '=' || b1 =='=' ) {
-			return 1;
-		}
 	}
 
 	return 1;
@@ -92,7 +96,7 @@ int str_to_int(char* c, int* to) {
 
 // I think break_arg_k is doing too much work.
 // it handles cases like -a=b, and [-a, =b] where a is a seperate string from b.
-int break_arg_k(char* arg_k, char** arg_v, int s_off) {
+int break_arg_k(char* arg_k, char** arg_v, int* eq_pos, int s_off) {
 
 	int sep_e = 0;
 	int sep_i = s_off;
@@ -118,6 +122,7 @@ int break_arg_k(char* arg_k, char** arg_v, int s_off) {
 	
 	char* off = arg_k + (sep_e+1); // Offset in memory.
 	*arg_v = off;
+	*eq_pos = max(sep_e, 0);
 	
 	return 1;
 }
@@ -144,8 +149,11 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 		}
 
 		int k = kvs_i++;
-		kvs[k].key = arg_k; 
-		kvs[k].val = NULL;
+
+		struct KeyValue* kv = &kvs[k];
+		kv->key_eq = 0;
+		kv->key = arg_k; 
+		kv->val = NULL;
 		
 		get_chars(argc, argv, &i, &arg_eq);
 
@@ -162,7 +170,7 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 				continue;
 			}
 			
-			if (break_arg_k(arg_k, &arg_v, eq_i)) {
+			if (break_arg_k(arg_k, &arg_v, &kv->key_eq, eq_i)) {
 				arg_eq = NULL;		
 			}
 		}
@@ -170,7 +178,7 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 		// arg_eq holds the value.
 		if ( arg_eq != NULL){
 			if ( arg_eq[0] == '=' ) {
-				break_arg_k(arg_eq,&arg_v, 0);
+				break_arg_k(arg_eq,&arg_v, &kv->key_eq, 0);
 			} else {
 				arg_v = arg_eq;
 			}
@@ -202,7 +210,7 @@ int search_kvs_for_flag( int c, struct Flag* f, struct KeyValue* dst, struct Key
 		char* a = k.key;
 		a++; // Sub out the '-', we shouldaaa done this earlier..
 		
-		if (str_match(a, f->name)) {
+		if (str_match(a, f->name, k.key_eq)) {
 			*dst = k;
 			return 1;
 		}
@@ -222,7 +230,7 @@ void map_kv_data_to_flag(struct Flag* f, struct KeyValue kv) {
 					break;
 				}
 				
-				f->data.boolean = str_match(kv.val, "true\0") || str_match(kv.val, "false\0"); 
+				f->data.boolean = str_match(kv.val, "true\0", 0) || str_match(kv.val, "false\0", 0); 
 			}
 			break;
 		case Int:

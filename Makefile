@@ -8,7 +8,7 @@ BASE_LIB_DIR := /usr/local/include
 LIB_FLAGS := -lihct -Wl,-R $(BASE_LIB_DIR)
 
 TEST_OBJ := $(BUILD_DIR)/test.o
-CFLAGS_TEST := -o ${TEST_OBJ} $(LIB_FLAGS)
+CFLAGS_TEST := -g -o ${TEST_OBJ} $(LIB_FLAGS)
 
 all: build_tests run_tests run_examples
 	
