@@ -105,14 +105,14 @@ int break_arg_k(char* arg_k, char** arg_v, int* eq_pos, int s_off) {
 
 	// Todo: change this to 'find_char'
 	while(arg_k_cp[sep_i] != '\0') {
-		if ( arg_k_cp[sep_i] == '=' ) {
+		if ( arg_k_cp[sep_i] == FLAG_EQUAL ) {
 			sep_e = sep_i;
 			break;
 		}
 		sep_i++;
 	}
 
-	if ( sep_e <= 0 && (arg_k[sep_e] != '=') ) {		
+	if ( sep_e <= 0 && (arg_k[sep_e] != FLAG_EQUAL) ) {		
 		return 0;
 	}
 
@@ -164,7 +164,7 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 				i--; // Go back 1.		
 			}
 						
-			int eq_i = find_char(arg_k, '=');
+			int eq_i = find_char(arg_k, FLAG_EQUAL);
 
 			if ( eq_i == EOF ) {
 				continue;
@@ -177,7 +177,7 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 
 		// arg_eq holds the value.
 		if ( arg_eq != NULL){
-			if ( arg_eq[0] == '=' ) {
+			if ( arg_eq[0] == FLAG_EQUAL ) {
 				break_arg_k(arg_eq,&arg_v, &kv->key_eq, 0);
 			} else {
 				arg_v = arg_eq;
