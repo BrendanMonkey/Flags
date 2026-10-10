@@ -196,7 +196,7 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 	return kvs_i;
 };
 
-// A hash map would be nice, as this is a O(N*M) where N is the count of pairs to search, and M is the length of the pairs key.
+// A hash map would be nice, as this is a O(N*M) where N is the count of pairs to search, and M is the LEN of the pairs key.
 int search_kvs_for_flag( int c, struct Flag* f, struct KeyValue* dst, struct KeyValue* kvs) {
 
 	for (int i = 0; i < c; i ++ ) {

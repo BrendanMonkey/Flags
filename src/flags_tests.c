@@ -11,7 +11,7 @@ IHCT_TEST(test_define_flag_and_get_value) {
 		expected_str
 	};
 
-	int margs_len = LENGTH(margs, char*);
+	int margs_len = LEN(margs, char*);
 
 	struct Flag flag_print = flag_string(FLAG_STR("print"), NULL);
 
@@ -19,7 +19,7 @@ IHCT_TEST(test_define_flag_and_get_value) {
 		&flag_print
 	};
 
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	struct Flags flags = flags_new(f, LEN(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
 	IHCT_ASSERT(flag_print.data.string != NULL);
@@ -37,7 +37,7 @@ IHCT_TEST(test_define_and_misspell_argv) {
 		FLAG_STR("'hello testing world!'")
 	};
 
-	int margs_len = LENGTH(margs, char*);
+	int margs_len = LEN(margs, char*);
 
 	struct Flag flag_print = flag_string(FLAG_STR("print"), NULL);
 	
@@ -45,7 +45,7 @@ IHCT_TEST(test_define_and_misspell_argv) {
 		&flag_print
 	};
 
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	struct Flags flags = flags_new(f, LEN(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
 	// This should be null!!!
@@ -67,7 +67,7 @@ IHCT_TEST(test_boolean_flags) {
 		FLAG_STR("0"),
 	};
 
-	int margs_len = LENGTH(margs, char*);
+	int margs_len = LEN(margs, char*);
 
 	struct Flag flag_a = flag_boolean(FLAG_STR("a"), 1);
 	struct Flag flag_b = flag_boolean(FLAG_STR("b"), 0);
@@ -81,7 +81,7 @@ IHCT_TEST(test_boolean_flags) {
 		&flag_d,
 	};
 
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	struct Flags flags = flags_new(f, LEN(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
 	IHCT_ASSERT(flag_a.data.boolean == 1);
@@ -105,7 +105,7 @@ IHCT_TEST(test_int_flags) {
 		FLAG_STR("-9")
 	};
 
-	int margs_len = LENGTH(margs, char*);
+	int margs_len = LEN(margs, char*);
 
 	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
 	struct Flag flag_b = flag_int(FLAG_STR("b"), 0);
@@ -117,7 +117,7 @@ IHCT_TEST(test_int_flags) {
 		&flag_c,
 	};
 
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	struct Flags flags = flags_new(f, LEN(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
 	IHCT_ASSERT(flag_a.data.integer == 123);
@@ -132,7 +132,7 @@ IHCT_TEST(test_weird_parsing_strings_1) {
 		FLAG_STR("=1"),
 	};
 
-	int margs_len = LENGTH(margs, char*);
+	int margs_len = LEN(margs, char*);
 
 	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
 	
@@ -140,7 +140,7 @@ IHCT_TEST(test_weird_parsing_strings_1) {
 		&flag_a,
 	};
 
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	struct Flags flags = flags_new(f, LEN(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
 	IHCT_ASSERT(flag_a.data.integer == 1);
@@ -154,7 +154,7 @@ IHCT_TEST(test_weird_parsing_strings_2) {
 		FLAG_STR("1"),
 	};
 
-	int margs_len = LENGTH(margs, char*);
+	int margs_len = LEN(margs, char*);
 
 	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
 	
@@ -162,7 +162,7 @@ IHCT_TEST(test_weird_parsing_strings_2) {
 		&flag_a,
 	};
 
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	struct Flags flags = flags_new(f, LEN(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
 	IHCT_ASSERT(flag_a.data.integer == 1);
@@ -175,7 +175,7 @@ IHCT_TEST(test_weird_parsing_strings_3) {
 		FLAG_STR("-a=1"),
 	};
 
-	int margs_len = LENGTH(margs, char*);
+	int margs_len = LEN(margs, char*);
 
 	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
 	
@@ -183,7 +183,7 @@ IHCT_TEST(test_weird_parsing_strings_3) {
 		&flag_a,
 	};
 
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
+	struct Flags flags = flags_new(f, LEN(f, struct Flag*));
 	flags_parse(margs_len, margs, flags);
 
 	IHCT_ASSERT(flag_a.data.integer == 1);

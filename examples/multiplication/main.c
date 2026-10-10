@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
 		&flag_y_mul
 	};
 
-	struct Flags flags = flags_new(f, FLAG_LENGTH(f));
+	struct Flags flags = flags_new(f, FLAG_LEN(f));
 	flags_parse(argc, argv, flags);
 
 	int out = flag_x_mul.data.integer * flag_y_mul.data.integer;
