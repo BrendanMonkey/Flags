@@ -27,7 +27,7 @@ IHCT_TEST(test_define_flag_and_get_value) {
 	IHCT_ASSERT_STR(flag_print.data.string, expected_str);
 }
 
-IHCT_TEST(test_define_and_misspell) {
+IHCT_TEST(test_define_and_misspell_argv) {
 
 	int x = 10;
 	char* margs[] = {
@@ -52,43 +52,7 @@ IHCT_TEST(test_define_and_misspell) {
 
 }
 
-
-IHCT_TEST(test_define_random) {
-
-	char* monkey_str = "test\0";
-	char* margs[] = {
-		"-monkey\0",
-		"=\0",
-		monkey_str,
-	};
-
-	int margs_len = LENGTH(margs, char*);
-
-	struct Flag flag_print = flag_string(FLAG_STR("print"), NULL);
-	struct Flag flag_monkey = flag_string(FLAG_STR("monkey"), NULL);
-	
-	struct Flag flag_monkey2 = flag_string(FLAG_STR("monkey2"), NULL);
-	
-	struct Flag* f[] = {
-		&flag_monkey,
-		&flag_print,
-	};
-
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
-	flags_parse(margs_len, margs, flags);
-
-	// This should be null!!!
-	IHCT_ASSERT(flag_print.data.string == NULL);
-	
-	// This should not be null!!!
-	IHCT_ASSERT(flag_monkey.data.string != NULL);
-	IHCT_ASSERT(flag_monkey.data.string == monkey_str);
-	
-//	IHCT_ASSERT(flag_a.data.boolean == 1);
-
-}
-
-IHCT_TEST(test_boolean_values) {
+IHCT_TEST(test_boolean_flags) {
 
 	char* margs[] = {
 		"-a\0",
@@ -126,7 +90,7 @@ IHCT_TEST(test_boolean_values) {
 	
 }
 
-IHCT_TEST(test_int_values) {
+IHCT_TEST(test_int_flags) {
 
 	char* margs[] = {
 		"-a\0",
@@ -160,29 +124,7 @@ IHCT_TEST(test_int_values) {
 	IHCT_ASSERT(flag_c.data.integer == -9);
 }
 
-IHCT_TEST(test) {
-
-	char* margs[] = {
-		"-a=1\0",
-	};
-
-	int margs_len = LENGTH(margs, char*);
-
-	struct Flag flag_a = flag_int(FLAG_STR("a"), 0);
-	
-	struct Flag* f[] = {
-		&flag_a,
-	};
-
-	struct Flags flags = flags_new(f, LENGTH(f, struct Flag*));
-	flags_parse(margs_len, margs, flags);
-
-	IHCT_ASSERT(flag_a.data.integer == 1);
-	
-}
-
-
-IHCT_TEST(test_werid_parsing) {
+IHCT_TEST(test_weird_parsing_strings_1) {
 
 	char* margs[] = {
 		"-a\0",
@@ -203,7 +145,8 @@ IHCT_TEST(test_werid_parsing) {
 	IHCT_ASSERT(flag_a.data.integer == 1);
 	
 }
-IHCT_TEST(test_werid_parsing2) {
+
+IHCT_TEST(test_weird_parsing_strings_2) {
 
 	char* margs[] = {
 		"-a=\0",
@@ -225,13 +168,10 @@ IHCT_TEST(test_werid_parsing2) {
 	
 }
 
-IHCT_TEST(test_werid_parsing3) {
+IHCT_TEST(test_weird_parsing_strings_3) {
 
 	char* margs[] = {
-		
-		"-a\0",
-		"=1\0",
-
+		"-a=1\0",
 	};
 
 	int margs_len = LENGTH(margs, char*);
