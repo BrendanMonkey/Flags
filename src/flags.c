@@ -258,11 +258,11 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	for (int i = 0; i < flags.count; i++) {
 
 		struct KeyValue kv;
-		struct Flag* f = flags.flags[i];
+		struct Flag f = flags.flags[i];
 	
-		assert(f->name != NULL); // You messed up if a flag name is null lmao.
+		assert(f.name != NULL); // You messed up if a flag name is null lmao.
 
-		if ( !search_kvs_for_flag(kvs_c, f, &kv, kvs) ) {
+		if ( !search_kvs_for_flag(kvs_c, &f, &kv, kvs) ) {
 			continue;
 		}
 
@@ -270,13 +270,13 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 			continue;
 		}
 
-		map_kv_data_to_flag(f, kv);
+		map_kv_data_to_flag(&f, kv);
 	}
 
 	return kvs_c;
 }
 
-struct Flags flags_new(struct Flag** flags, int count) {
+struct Flags flags_new(struct Flag* flags, int count) {
 
 	struct Flags f;
 	f.flags = flags;

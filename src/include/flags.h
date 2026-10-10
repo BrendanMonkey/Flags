@@ -30,12 +30,12 @@ struct Flag {
 
 struct Flags {
 	int count;
-	struct Flag** flags; // I think this creates fragmentation, although it makes using flags nicer, so the tradeoff from memory lookup is worth it.
+	struct Flag* flags; // I think this creates fragmentation, although it makes using flags nicer, so the tradeoff from memory lookup is worth it.
 };
 
 int flags_parse(int argc, char** argv, struct Flags flags);
 
-struct Flags flags_new(struct Flag** flags, int count) ;
+struct Flags flags_new(struct Flag* flags, int count) ;
 
 struct Flag flag_int(char* name, int* def);
 struct Flag flag_boolean(char* name, int* def);
