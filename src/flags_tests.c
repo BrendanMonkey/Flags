@@ -4,10 +4,10 @@
 
 IHCT_TEST(test_define_flag_and_get_value) {
 
-	char* expected_str = "'hellotesting world!'\0";
+	char* expected_str = FLAG_STR("'hellotesting world!'");
 	char* margs[] = {
-		"-print\0",
-		"=\0",
+		FLAG_STR("-print"),
+		FLAG_STR("="),
 		expected_str
 	};
 
@@ -30,10 +30,11 @@ IHCT_TEST(test_define_flag_and_get_value) {
 IHCT_TEST(test_define_and_misspell_argv) {
 
 	int x = 10;
+
 	char* margs[] = {
-		"-rint\0", // Misspell the command!
-		"=\0",
-		"'hello testing world!'\0"
+		FLAG_STR("-rint"), // Misspell the command!
+		FLAG_STR("="),
+		FLAG_STR("'hello testing world!'")
 	};
 
 	int margs_len = LENGTH(margs, char*);
@@ -55,15 +56,15 @@ IHCT_TEST(test_define_and_misspell_argv) {
 IHCT_TEST(test_boolean_flags) {
 
 	char* margs[] = {
-		"-a\0",
-		"-b\0",
-		"=\0",
-		"1\0",
-		"-c\0",
-		"=\0",
-		"-d\0",
-		"=\0",
-		"0\0",
+		FLAG_STR("-a"),
+		FLAG_STR("-b"),
+		FLAG_STR("="),
+		FLAG_STR("1"),
+		FLAG_STR("-c"),
+		FLAG_STR("="),
+		FLAG_STR("-d"),
+		FLAG_STR("="),
+		FLAG_STR("0"),
 	};
 
 	int margs_len = LENGTH(margs, char*);
@@ -93,15 +94,15 @@ IHCT_TEST(test_boolean_flags) {
 IHCT_TEST(test_int_flags) {
 
 	char* margs[] = {
-		"-a\0",
-		"=\0",
-		"123\0",
-		"-b\0",
-		"=\0",
-		"12a\0",
-		"-c\0",
-		"=\0",
-		"-9\0"
+		FLAG_STR("-a"),
+		FLAG_STR("="),
+		FLAG_STR("123"),
+		FLAG_STR("-b"),
+		FLAG_STR("="),
+		FLAG_STR("12a"),
+		FLAG_STR("-c"),
+		FLAG_STR("="),
+		FLAG_STR("-9")
 	};
 
 	int margs_len = LENGTH(margs, char*);
@@ -127,8 +128,8 @@ IHCT_TEST(test_int_flags) {
 IHCT_TEST(test_weird_parsing_strings_1) {
 
 	char* margs[] = {
-		"-a\0",
-		"=1\0",
+		FLAG_STR("-a"),
+		FLAG_STR("=1"),
 	};
 
 	int margs_len = LENGTH(margs, char*);
@@ -149,8 +150,8 @@ IHCT_TEST(test_weird_parsing_strings_1) {
 IHCT_TEST(test_weird_parsing_strings_2) {
 
 	char* margs[] = {
-		"-a=\0",
-		"1\0",
+		FLAG_STR("-a="),
+		FLAG_STR("1"),
 	};
 
 	int margs_len = LENGTH(margs, char*);
@@ -171,7 +172,7 @@ IHCT_TEST(test_weird_parsing_strings_2) {
 IHCT_TEST(test_weird_parsing_strings_3) {
 
 	char* margs[] = {
-		"-a=1\0",
+		FLAG_STR("-a=1"),
 	};
 
 	int margs_len = LENGTH(margs, char*);
