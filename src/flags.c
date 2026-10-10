@@ -28,6 +28,7 @@ int find_char(char* a, char t) {
 	return EOF;
 }
 
+// 's' is an integer used to control how many N chars should be searched. 
 int str_match(char* a, char* b, int s) {
 
 	assert(a != NULL);
@@ -170,6 +171,7 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 				continue;
 			}
 			
+			// eq_i is where the equal char starts.
 			if (break_arg_k(arg_k, &arg_v, &kv->key_eq, eq_i)) {
 				arg_eq = NULL;		
 			}
@@ -246,7 +248,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 
 	// This is always bigger than it needs to be...
 	// I didn't think of that while designing the parser.
-	// It shouldn't be a problem??? Maybe it would cause a stack overflow, if you had a load of args.
+	// It shouldn't be a problem??? Maybe it could cause a stack overflow, if you had a load of args.
 	struct KeyValue kvs[argc];
 
 	// Take a first parse on all our arguments.
