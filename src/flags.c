@@ -228,15 +228,15 @@ void map_kv_data_to_flag(struct Flag* f, struct KeyValue kv) {
 				int bool_val = (kv.val[0] == '1' ? 1 : (kv.val[0] == '0' ? 0 : -1));
 				
 				if ( bool_val != -1 ) {
-					f->data.boolean = bool_val;
+					*f->data.integer = bool_val;
 					break;
 				}
 				
-				f->data.boolean = str_match(kv.val, "true\0", 0) || str_match(kv.val, "false\0", 0); 
+				*f->data.integer = str_match(kv.val, "true\0", 0) || str_match(kv.val, "false\0", 0); 
 			}
 			break;
 		case Int:
-			str_to_int(kv.val, &f->data.integer);
+			str_to_int(kv.val, f->data.integer);
 			break;
 		case String:	
 			f->data.string = kv.val;
@@ -292,26 +292,26 @@ struct Flag flag_new(char* name, enum Type type) {
 	return f;
 }
 
-struct Flag flag_string(char* name, char* def) {
+struct Flag flag_string(char* name, char* ptr) {
 	
 	struct Flag f = flag_new(name, String);
-	f.data.string = def;
+	f.data.string = ptr;
 	
 	return f;
 }
 
-struct Flag flag_int(char* name, int def) {
+struct Flag flag_int(char* name, int* ptr) {
 	
 	struct Flag f = flag_new(name, Int);
-	f.data.integer = def;
+	f.data.integer = ptr;
 	
 	return f;
 }
 
-struct Flag flag_boolean(char* name, int def) {
+struct Flag flag_boolean(char* name, int* ptr) {
 
 	struct Flag f = flag_new(name, Boolean);
-	f.data.boolean = def;
+	f.data.integer = ptr;
 	
 	return f;
 }
