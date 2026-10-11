@@ -9,7 +9,7 @@
 
 #define FLAG_STR(a) a "\0"
 #define LEN(a, x) (sizeof(a) / sizeof(x))
-#define FLAG_LEN(a) (sizeof(a) / sizeof(struct Flag*))
+#define FLAG_LEN(a) (sizeof(a) / sizeof(struct Flag))
 
 enum Type {
 	Int,
@@ -35,8 +35,7 @@ struct Flags {
 
 int flags_parse(int argc, char** argv, struct Flags flags);
 
-struct Flags flags_new(struct Flag* flags, int count) ;
-
+struct Flags flags_new(struct Flag* flags, int count);
 struct Flag flag_int(char* name, int* def);
 struct Flag flag_boolean(char* name, int* def);
 struct Flag flag_string(char* name, char** ptr);
