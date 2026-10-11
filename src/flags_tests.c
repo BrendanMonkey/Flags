@@ -147,6 +147,94 @@ IHCT_TEST(test_missing_equal_operator) {
 	IHCT_ASSERT(z == 0);
 }
 
+IHCT_TEST(test_inline_int) {
+
+	char* margs[] = {
+		FLAG_STR("-x=10"),
+	};
+
+	int margs_len = LEN(margs, char*);
+
+	int x = 0;
+	struct Flag f[] = {
+		flag_int(FLAG_STR("x"), &x),
+	};
+
+	struct Flags flags = flags_new(f, LEN(f, struct Flag));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(x == 10);
+}
+
+IHCT_TEST(test_weird_arg_int) {
+
+	char* margs[] = {
+		FLAG_STR("-x="),
+		FLAG_STR("10"),
+	};
+
+	int margs_len = LEN(margs, char*);
+
+	int x = 0;
+	struct Flag f[] = {
+		flag_int(FLAG_STR("x"), &x),
+	};
+
+	struct Flags flags = flags_new(f, LEN(f, struct Flag));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(x == 10);
+}
+
+IHCT_TEST(test_weird_arg_int_2) {
+
+	char* margs[] = {
+		FLAG_STR("-x"),
+		FLAG_STR("=10"),
+	};
+
+	int margs_len = LEN(margs, char*);
+
+	int x = 0;
+	struct Flag f[] = {
+		flag_int(FLAG_STR("x"), &x),
+	};
+
+	struct Flags flags = flags_new(f, LEN(f, struct Flag));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(x == 10);
+}
+
+IHCT_TEST(test_weird_arg_and_missing_value_int) {
+
+	char* margs[] = {
+		FLAG_STR("-x"),
+		FLAG_STR("=10"),
+		FLAG_STR("-y="),
+		FLAG_STR("-z=10"),
+	};
+
+	int margs_len = LEN(margs, char*);
+
+	int x = 0;
+	int y = 0;
+	int z = 0;
+
+	struct Flag f[] = {
+		flag_int(FLAG_STR("x"), &x),
+		flag_int(FLAG_STR("y"), &y),
+		flag_int(FLAG_STR("z"), &z),
+	};
+
+	struct Flags flags = flags_new(f, LEN(f, struct Flag));
+	flags_parse(margs_len, margs, flags);
+
+	IHCT_ASSERT(x == 10);
+	IHCT_ASSERT(y == 0);
+	IHCT_ASSERT(z == 10);
+}
+
 int main(int argc, char **argv) {
 
 	return IHCT_RUN(argc, argv);
