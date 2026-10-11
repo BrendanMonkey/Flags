@@ -113,16 +113,22 @@ int break_arg_k(char* arg_k, char** arg_v, int* eq_pos, int s_off) {
 		sep_i++;
 	}
 
+	// Is sep_e == 0
 	if ( sep_e <= 0 && (arg_k[sep_e] != FLAG_EQUAL) ) {		
 		return 0;
 	}
 
+	// Does arg_k hold a value?
 	if ( arg_k[sep_e+1] == '\0' ) {
 		return 0;
 	} 
 	
 	char* off = arg_k + (sep_e+1); // Offset in memory.
-	*arg_v = off;
+	*arg_v = off; 
+
+	// Ok - we leave 'arg_k' unmodified, 
+	// and use this value when comparing arg_k with flags,
+	// to seperate arg_k from arg_v.
 	*eq_pos = max(sep_e, 0);
 	
 	return 1;
@@ -227,12 +233,11 @@ void map_kv_data_to_flag(struct Flag* f, struct KeyValue kv) {
 			{
 				int bool_val = (kv.val[0] == '1' ? 1 : (kv.val[0] == '0' ? 0 : -1));
 				
-				if ( bool_val != -1 ) {
-					*f->data.integer = bool_val;
-					break;
-				}
+				if ( bool_val == -1 ) {
+					bool_val = str_match(kv.val, "true\0", 0);
+				} 
 				
-				*f->data.integer = str_match(kv.val, "true\0", 0);
+				*f->data.integer = bool_val;
 			}
 			break;
 		case Int:
