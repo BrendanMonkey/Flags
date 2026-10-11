@@ -267,7 +267,11 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 		}
 
 		if (kv.val == NULL ) {
-			continue;
+			if ( f.type != Boolean ) {
+				continue;
+			}
+
+			kv.val = FLAG_STR("1");
 		}
 
 		map_kv_data_to_flag(&f, kv);

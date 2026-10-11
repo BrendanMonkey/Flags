@@ -66,9 +66,10 @@ IHCT_TEST(test_boolean_flags) {
 		FLAG_STR("1"),
 		FLAG_STR("-c"),
 		FLAG_STR("="),
+		FLAG_STR("0"),
 		FLAG_STR("-d"),
 		FLAG_STR("="),
-		FLAG_STR("0"),
+		FLAG_STR("1"),
 	};
 
 	int margs_len = LEN(margs, char*);
