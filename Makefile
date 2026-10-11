@@ -1,22 +1,22 @@
 BUILD_DIR := ./bin
 SRC := ./src
 
-TEST_SRC := $(SRC)/*_tests.c
+TEST_CODE := $(SRC)/flags_tests.c
 CODE_SRC := $(SRC)/flags.c
 
 BASE_LIB_DIR := /usr/local/include
-LIB_FLAGS := -lihct -Wl,-R $(BASE_LIB_DIR)
+LIB_FLAGS := -lihct -Wl,-R $(BASE_LIB_DIR) 
 
 TEST_OBJ := $(BUILD_DIR)/test.o
-CFLAGS_TEST := -g -o ${TEST_OBJ} $(LIB_FLAGS)
+TEST_CFLAGS := -g -o ${TEST_OBJ} $(LIB_FLAGS)
 
-all: build_tests run_tests run_examples
+all: flag_build_test flag_run_test clean
 	
-build_tests: 
-	$(CC) $(CODE_SRC) $(TEST_SRC) $(CFLAGS_TEST)
+flag_build_test:
+	$(CC) $(CODE_SRC) $(TEST_CODE) $(TEST_CFLAGS)
 
-run_tests: build_tests
+flag_run_test: flag_build_test
 	$(BUILD_DIR)/test.o -t 100
-	
+
 clean:
 	rm $(BUILD_DIR)/*.o
