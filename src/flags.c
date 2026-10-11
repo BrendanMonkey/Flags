@@ -239,7 +239,7 @@ void map_kv_data_to_flag(struct Flag* f, struct KeyValue kv) {
 			str_to_int(kv.val, f->data.integer);
 			break;
 		case String:	
-			f->data.string = kv.val;
+			*f->data.string = kv.val;
 			break;
 	}
 }
@@ -296,7 +296,7 @@ struct Flag flag_new(char* name, enum Type type) {
 	return f;
 }
 
-struct Flag flag_string(char* name, char* ptr) {
+struct Flag flag_string(char* name, char** ptr) {
 	
 	struct Flag f = flag_new(name, String);
 	f.data.string = ptr;

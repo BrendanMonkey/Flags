@@ -19,7 +19,7 @@ enum Type {
 
 union TypeData {
 	int* integer;
-	char* string;
+	char** string;
 };
 
 struct Flag {
@@ -39,6 +39,6 @@ struct Flags flags_new(struct Flag* flags, int count) ;
 
 struct Flag flag_int(char* name, int* def);
 struct Flag flag_boolean(char* name, int* def);
-struct Flag flag_string(char* name, char* ptr);
+struct Flag flag_string(char* name, char** ptr);
 
 #endif
