@@ -53,7 +53,7 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	int i_c = *i;
 
 	if ( i_c >= argc ) {
-		return EOF;
+		return 0;
 	}
 
 	char* t = argv[i_c];
@@ -61,7 +61,7 @@ int get_chars(int argc, char** argv, int* i, char** c) {
 	*c = t;
 	(*i)++;
 
-	return i_c;
+	return 1;
 }
 
 // I used a pointer as this allows for negative integers,
@@ -140,7 +140,7 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 		char* arg_v = NULL;
 		char* arg_eq = NULL;
 
-		if (get_chars(argc, argv, &i, &arg_k) == EOF) {
+		if (!get_chars(argc, argv, &i, &arg_k)) {
 			break;
 		}
 
