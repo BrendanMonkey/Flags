@@ -3,8 +3,8 @@
 
 int main(int argc, char** argv) {
 
-	int x = 0;
-	int y = 0;
+	int x = 1;
+	int y = 25;
 
 	struct Flag f[] = {
 		flag_int(FLAG_STR("x"), &x),
