@@ -16,10 +16,7 @@ build_tests:
 	$(CC) $(CODE_SRC) $(TEST_SRC) $(CFLAGS_TEST)
 
 run_tests: build_tests
-	./bin/test.o -t 99999
-
-example:
-	$(CC) -g $(CODE_SRC) examples/multiplication/main.c -o bin/examples.o
-
-run_examples: example
-	./bin/examples.o
+	$(BUILD_DIR)/test.o -t 100
+	
+clean:
+	rm $(BUILD_DIR)/*.o
