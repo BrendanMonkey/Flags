@@ -232,7 +232,7 @@ void map_kv_data_to_flag(struct Flag* f, struct KeyValue kv) {
 					break;
 				}
 				
-				*f->data.integer = str_match(kv.val, "true\0", 0) || str_match(kv.val, "false\0", 0); 
+				*f->data.integer = str_match(kv.val, "true\0", 0);
 			}
 			break;
 		case Int:
