@@ -104,17 +104,18 @@ int break_arg_k(char* arg_k, char** arg_v, int* eq_pos, int s_off) {
 
 	char* arg_k_cp = arg_k;
 
-	// Todo: change this to 'find_char'
-	while(arg_k_cp[sep_i] != '\0') {
+	while ( arg_k_cp[sep_i] != '\0' ) {
+
 		if ( arg_k_cp[sep_i] == FLAG_EQUAL ) {
 			sep_e = sep_i;
 			break;
 		}
+
 		sep_i++;
 	}
 
 	// Is sep_e == 0
-	if ( sep_e <= 0 && (arg_k[sep_e] != FLAG_EQUAL) ) {		
+	if ( sep_e <= 0 && ( arg_k[sep_e] != FLAG_EQUAL ) ) {		
 		return 0;
 	}
 
@@ -135,6 +136,7 @@ int break_arg_k(char* arg_k, char** arg_v, int* eq_pos, int s_off) {
 }
 
 // I kinda hate this parser, like, even after re-writing it, i hate it.
+// It is built to handle weird cases ['x=y'], ['x=', 'y'], ['x', '=y'], ['x', '=', 'y'].
 int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 
 	int i = 0; 
@@ -146,7 +148,7 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 		char* arg_v = NULL;
 		char* arg_eq = NULL;
 
-		if (!get_chars(argc, argv, &i, &arg_k)) {
+		if ( !get_chars(argc, argv, &i, &arg_k) ) {
 			break;
 		}
 
@@ -162,12 +164,13 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 		kv->key = arg_k; 
 		kv->val = NULL;
 		
+		// get our equal value.
 		get_chars(argc, argv, &i, &arg_eq);
 
 		// This means arg_k likely holds the key and value.
 		if ( arg_eq == NULL || arg_eq[0] != FLAG_EQUAL ) {
 
-			if (arg_eq != NULL && arg_eq[0] == FLAG_TAG  ) {
+			if ( arg_eq != NULL && arg_eq[0] == FLAG_TAG ) {
 				i--; // Go back 1.		
 			}
 						
@@ -179,12 +182,13 @@ int parse_chars(int argc, char** argv, struct KeyValue* kvs) {
 			
 			// eq_i is where the equal char starts.
 			if (break_arg_k(arg_k, &arg_v, &kv->key_eq, eq_i)) {
-				arg_eq = NULL;		
+				arg_eq = NULL; // arg_eq is actually an equal operator, and we disregard it.
 			}
+
 		}
 
-		// arg_eq holds the value.
-		if ( arg_eq != NULL){
+		// arg_eq holds the value, and we need to seperate key from value.
+		if ( arg_eq != NULL ){
 			if ( arg_eq[0] == FLAG_EQUAL ) {
 				break_arg_k(arg_eq,&arg_v, &kv->key_eq, 0);
 			} else {
@@ -209,17 +213,17 @@ int search_kvs_for_flag( int c, struct Flag* f, struct KeyValue* dst, struct Key
 
 	for (int i = 0; i < c; i ++ ) {
 
-		struct KeyValue k = kvs[i];
+		struct KeyValue kv = kvs[i];
 
-		if (k.key == NULL) {
+		if (kv.key == NULL) {
 			continue;
 		}
 
-		char* a = k.key;
-		a++; // Sub out the '-', we shouldaaa done this earlier..
+		char* key = kv.key;
+		key++; // Sub out the '-', we shouldaaa done this earlier..
 		
-		if (str_match(a, f->name, k.key_eq)) {
-			*dst = k;
+		if (str_match(key, f->name, kv.key_eq)) {
+			*dst = kv;
 			return 1;
 		}
 	}
@@ -271,7 +275,8 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 			continue;
 		}
 
-		if (kv.val == NULL ) {
+		if ( kv.val == NULL ) {
+
 			if ( f.type != Boolean ) {
 				continue;
 			}
