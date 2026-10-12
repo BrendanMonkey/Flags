@@ -264,6 +264,7 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	// 'c' is the real size of all the arguments.
 	int kvs_c = parse_chars(argc, argv, kvs);
 
+	// Go over all our flags, find a kv_pair that matches with one of the flags.
 	for (int i = 0; i < flags.count; i++) {
 
 		struct KeyValue kv;
@@ -271,12 +272,13 @@ int flags_parse(int argc, char** argv, struct Flags flags) {
 	
 		assert(f.name != NULL); // You messed up if a flag name is null lmao.
 
+		// Search our kv pairs for a flag that matches.
 		if ( !search_kvs_for_flag(kvs_c, &f, &kv, kvs) ) {
 			continue;
 		}
 
 		if ( kv.val == NULL ) {
-
+			// If we're not a boolean, continue.
 			if ( f.type != Boolean ) {
 				continue;
 			}
